@@ -32,7 +32,7 @@
             color: #0d9488;
         }
         .section-title {
-            color: #0d9488;
+            color: #000;
             border-bottom: 2px solid #0d9488;
             padding-bottom: 8px;
             margin-top: 30px;
@@ -127,9 +127,8 @@
                     <div class="feature-card">
                         <h4>BMI (auto-calculate or enter directly)</h4>
                         <div class="bmi-calc-group">
-                            <input type="number" id="height" min="100" max="250" step="1" placeholder="Height (cm)">
-                            <input type="number" id="weight" min="30" max="200" step="0.1" placeholder="Weight (kg)">
-                            <button type="button" class="bmi-calc-btn" onclick="calculateBMI()">Calc</button>
+                            <input type="number" id="height" min="100" max="250" step="1" placeholder="Height (cm)" oninput="calculateBMI()">
+                            <input type="number" id="weight" min="30" max="200" step="0.1" placeholder="Weight (kg)" oninput="calculateBMI()">
                         </div>
                         <input type="number" name="bmi" id="bmi" min="15" max="55" step="0.1" required placeholder="BMI" value="{{ bmi if bmi else '' }}">
                         <div class="bmi-result" id="bmiResult"></div>
@@ -312,22 +311,22 @@
         function calculateBMI() {
             var height = parseFloat(document.getElementById('height').value);
             var weight = parseFloat(document.getElementById('weight').value);
+            var resultDiv = document.getElementById('bmiResult');
             if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
-                document.getElementById('bmiResult').textContent = 'Please enter valid height and weight.';
-                document.getElementById('bmiResult').style.color = '#e74c3c';
+                resultDiv.innerHTML = '';
                 return;
             }
             var heightM = height / 100;
             var bmi = weight / (heightM * heightM);
             bmi = Math.round(bmi * 10) / 10;
             document.getElementById('bmi').value = bmi;
-            var category = '';
-            if (bmi < 18.5) category = 'Underweight';
-            else if (bmi < 25) category = 'Normal';
-            else if (bmi < 30) category = 'Overweight';
-            else category = 'Obese';
-            document.getElementById('bmiResult').textContent = 'BMI: ' + bmi + ' (' + category + ')';
-            document.getElementById('bmiResult').style.color = '#48c9b0';
+            var category = '', color = '';
+            if (bmi < 18.5) { category = 'Underweight'; color = '#3498db'; }
+            else if (bmi < 25) { category = 'Normal'; color = '#27ae60'; }
+            else if (bmi < 30) { category = 'Overweight'; color = '#f39c12'; }
+            else { category = 'Obese'; color = '#e74c3c'; }
+            resultDiv.innerHTML = 'BMI: <strong>' + bmi + '</strong> — ' + category;
+            resultDiv.style.color = color;
         }
     </script>
 </body>
