@@ -22,44 +22,49 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    .stApp { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
-    .main-header { font-size: 2.5rem; color: #0d47a1 !important; text-align: center; padding: 1rem; font-weight: 700; }
-    .sub-header { font-size: 1.1rem; color: #333 !important; text-align: center; margin-bottom: 2rem; }
+    .stApp { background: #0a0a0a; }
+    .main-header { font-size: 2.5rem; color: #00d4ff !important; text-align: center; padding: 1rem; font-weight: 700; }
+    .sub-header { font-size: 1.1rem; color: #cccccc !important; text-align: center; margin-bottom: 2rem; }
     .section-header { 
-        color: #0d47a1 !important; 
-        border-bottom: 3px solid #0d47a1; 
+        color: #00d4ff !important; 
+        border-bottom: 3px solid #00d4ff; 
         padding-bottom: 8px; 
         font-weight: 700; 
         font-size: 1.3rem;
         margin-top: 1.5rem;
     }
-    h3 { color: #0d47a1 !important; font-weight: 700 !important; }
-    label { font-weight: 600 !important; color: #1a1a1a !important; }
-    [data-testid="stSidebar"] { background: linear-gradient(180deg, #0d47a1 0%, #1565c0 100%); }
+    h3 { color: #00d4ff !important; font-weight: 700 !important; }
+    label { font-weight: 600 !important; color: #ffffff !important; }
+    [data-testid="stSidebar"] { background: #1a1a1a !important; }
     [data-testid="stSidebar"] label { color: #ffffff !important; }
     [data-testid="stSidebar"] .stRadio label { color: #ffffff !important; }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color: #ffffff !important; }
-    [data-testid="stSidebar"] .stSuccess { background: rgba(255,255,255,0.2) !important; }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color: #00d4ff !important; }
+    [data-testid="stSidebar"] p { color: #cccccc !important; }
+    [data-testid="stSidebar"] .stSuccess { background: rgba(0,212,255,0.2) !important; }
     [data-testid="stSidebar"] .stSuccess p { color: #ffffff !important; }
+    [data-testid="stSidebar"] .stError p { color: #ff6b6b !important; }
     .stButton > button { 
-        background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); 
-        color: white; 
+        background: #00d4ff; 
+        color: #000000; 
         border: none; 
         padding: 0.7rem 2rem; 
-        font-weight: 600;
+        font-weight: 700;
         border-radius: 8px;
         font-size: 1rem;
         width: 100%;
     }
-    .stButton > button:hover { background: linear-gradient(135deg, #0a3d91 0%, #0d47a1 100%); }
+    .stButton > button:hover { background: #00b8e6; }
+    .stSelectbox, .stSlider, .stNumberInput { color: #ffffff !important; }
     div[data-testid="stMetric"] { 
-        background: white; 
+        background: #1a1a1a; 
         padding: 1rem; 
         border-radius: 10px; 
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+        border: 1px solid #333;
     }
-    div[data-testid="stMetric"] label { color: #555 !important; }
-    div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #0d47a1 !important; }
+    div[data-testid="stMetric"] label { color: #888 !important; }
+    div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #00d4ff !important; }
+    .stDataFrame { background: #1a1a1a !important; }
+    hr { border-color: #333 !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -309,7 +314,7 @@ metrics_df = pd.DataFrame(metrics_data)
 st.dataframe(metrics_df, use_container_width=True)
 
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
-colors = ['#78909c', '#78909c', '#0d47a1', '#78909c', '#78909c']
+colors = ['#333333', '#333333', '#00d4ff', '#333333', '#333333']
 
 axes[0].bar(metrics_df['Model'], metrics_df['R2 Score'], color=colors, edgecolor='black')
 axes[0].set_title('R2 Score', fontweight='bold')
