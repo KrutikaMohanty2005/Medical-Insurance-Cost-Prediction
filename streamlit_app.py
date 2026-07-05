@@ -22,9 +22,12 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    .main-header { font-size: 2.5rem; color: #2E86AB; text-align: center; padding: 1rem; }
-    .sub-header { font-size: 1.2rem; color: #666; text-align: center; }
-    .section-header { color: #2E86AB; border-bottom: 2px solid #2E86AB; padding-bottom: 5px; }
+    .main-header { font-size: 2.5rem; color: #1a1a2e !important; text-align: center; padding: 1rem; font-weight: 700; }
+    .sub-header { font-size: 1.2rem; color: #444 !important; text-align: center; }
+    .section-header { color: #1a1a2e !important; border-bottom: 3px solid #2E86AB; padding-bottom: 8px; font-weight: 600; font-size: 1.3rem; }
+    h3 { color: #1a1a2e !important; }
+    label { font-weight: 600 !important; }
+    [data-testid="stForm"] label { color: #333 !important; font-weight: 600 !important; }
 </style>
 """, unsafe_allow_html=True)
 
