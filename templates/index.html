@@ -20,7 +20,7 @@
         .nav-bar .logo {
             font-size: 1.2em;
             font-weight: 700;
-            color: #2E86AB;
+            color: #0d9488;
         }
         .nav-bar .nav-links a {
             color: #555;
@@ -29,11 +29,11 @@
             font-weight: 500;
         }
         .nav-bar .nav-links a:hover {
-            color: #2E86AB;
+            color: #0d9488;
         }
         .section-title {
-            color: #2E86AB;
-            border-bottom: 2px solid #2E86AB;
+            color: #0d9488;
+            border-bottom: 2px solid #0d9488;
             padding-bottom: 8px;
             margin-top: 30px;
             margin-bottom: 20px;
@@ -48,10 +48,10 @@
             background: #f8f9fa;
             padding: 15px;
             border-radius: 10px;
-            border-left: 4px solid #2E86AB;
+            border-left: 4px solid #0d9488;
         }
         .feature-card h4 {
-            color: #2E86AB;
+            color: #0d9488;
             margin-bottom: 8px;
         }
         .feature-card select, .feature-card input {
@@ -59,6 +59,34 @@
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
+        }
+        .bmi-calc-group {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+        .bmi-calc-group input {
+            flex: 1;
+        }
+        .bmi-calc-btn {
+            background: #0d9488;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .bmi-calc-btn:hover {
+            background: #0f766e;
+        }
+        .bmi-result {
+            font-size: 0.8em;
+            margin-top: 5px;
+            color: #555;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -68,7 +96,7 @@
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/history">History</a>
-            <span style="color:#2E86AB;font-weight:600;">{{ username }}</span>
+            <span style="color:#0d9488;font-weight:600;">{{ username }}</span>
             <a href="/logout">Logout</a>
         </div>
     </div>
@@ -97,8 +125,14 @@
                         </select>
                     </div>
                     <div class="feature-card">
-                        <h4>BMI</h4>
-                        <input type="number" name="bmi" min="15" max="55" step="0.1" required placeholder="15-55" value="{{ bmi if bmi else '' }}">
+                        <h4>BMI (auto-calculate or enter directly)</h4>
+                        <div class="bmi-calc-group">
+                            <input type="number" id="height" min="100" max="250" step="1" placeholder="Height (cm)">
+                            <input type="number" id="weight" min="30" max="200" step="0.1" placeholder="Weight (kg)">
+                            <button type="button" class="bmi-calc-btn" onclick="calculateBMI()">Calc</button>
+                        </div>
+                        <input type="number" name="bmi" id="bmi" min="15" max="55" step="0.1" required placeholder="BMI" value="{{ bmi if bmi else '' }}">
+                        <div class="bmi-result" id="bmiResult"></div>
                     </div>
                     <div class="feature-card">
                         <h4>Children</h4>
@@ -273,5 +307,28 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+        function calculateBMI() {
+            var height = parseFloat(document.getElementById('height').value);
+            var weight = parseFloat(document.getElementById('weight').value);
+            if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+                document.getElementById('bmiResult').textContent = 'Please enter valid height and weight.';
+                document.getElementById('bmiResult').style.color = '#e74c3c';
+                return;
+            }
+            var heightM = height / 100;
+            var bmi = weight / (heightM * heightM);
+            bmi = Math.round(bmi * 10) / 10;
+            document.getElementById('bmi').value = bmi;
+            var category = '';
+            if (bmi < 18.5) category = 'Underweight';
+            else if (bmi < 25) category = 'Normal';
+            else if (bmi < 30) category = 'Overweight';
+            else category = 'Obese';
+            document.getElementById('bmiResult').textContent = 'BMI: ' + bmi + ' (' + category + ')';
+            document.getElementById('bmiResult').style.color = '#48c9b0';
+        }
+    </script>
 </body>
 </html>

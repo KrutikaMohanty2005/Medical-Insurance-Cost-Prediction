@@ -194,7 +194,21 @@ with col1:
     st.markdown('<h3 class="section-header">Personal Information</h3>', unsafe_allow_html=True)
     age = st.slider("Age", 18, 64, 30)
     sex = st.selectbox("Gender", ["male", "female"])
-    bmi = st.number_input("BMI", 15.0, 55.0, 25.0, 0.1)
+
+    bmi_calc_col1, bmi_calc_col2, bmi_calc_col3 = st.columns(3)
+    with bmi_calc_col1:
+        height_cm = st.number_input("Height (cm)", 100.0, 250.0, 170.0, 1.0, key="height_calc")
+    with bmi_calc_col2:
+        weight_kg = st.number_input("Weight (kg)", 30.0, 200.0, 70.0, 0.5, key="weight_calc")
+    with bmi_calc_col3:
+        if st.button("Calculate BMI", key="calc_bmi_btn"):
+            height_m = height_cm / 100
+            calc_bmi = weight_kg / (height_m * height_m)
+            st.session_state.bmi_val = round(calc_bmi, 1)
+            cat = "Underweight" if calc_bmi < 18.5 else "Normal" if calc_bmi < 25 else "Overweight" if calc_bmi < 30 else "Obese"
+            st.success(f"BMI: {calc_bmi:.1f} ({cat})")
+
+    bmi = st.number_input("BMI", 15.0, 55.0, st.session_state.get("bmi_val", 25.0), 0.1)
     children = st.selectbox("Children", [0, 1, 2, 3, 4, 5])
     smoker = st.selectbox("Smoker", ["yes", "no"])
     region = st.selectbox("Region", ["north", "south", "east", "west"])
