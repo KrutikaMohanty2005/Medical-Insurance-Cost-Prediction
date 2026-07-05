@@ -6,6 +6,13 @@
     <title>Medical Insurance Cost Prediction - India</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         .nav-bar {
             display: flex;
             justify-content: space-between;
@@ -20,7 +27,7 @@
         .nav-bar .logo {
             font-size: 1.2em;
             font-weight: 700;
-            color: #0d9488;
+            color: #667eea;
         }
         .nav-bar .nav-links a {
             color: #555;
@@ -29,18 +36,47 @@
             font-weight: 500;
         }
         .nav-bar .nav-links a:hover {
-            color: #0d9488;
+            color: #667eea;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            padding: 30px 20px 10px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin: 4px 0;
+        }
+        .header .tagline {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+        .form-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 30px 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin: 0 auto 30px;
+            max-width: 1100px;
         }
         .section-title {
-            color: #000;
-            border-bottom: 2px solid #0d9488;
+            color: #333;
+            border-bottom: 3px solid #667eea;
             padding-bottom: 8px;
-            margin-top: 30px;
+            margin-top: 25px;
             margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.3em;
         }
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -48,45 +84,165 @@
             background: #f8f9fa;
             padding: 15px;
             border-radius: 10px;
-            border-left: 4px solid #0d9488;
+            border-left: 4px solid #667eea;
         }
         .feature-card h4 {
-            color: #0d9488;
+            color: #333;
             margin-bottom: 8px;
+            font-weight: 600;
         }
         .feature-card select, .feature-card input {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+            background: #fff;
+        }
+        .feature-card select:focus, .feature-card input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.2);
         }
         .bmi-calc-group {
             display: flex;
             gap: 8px;
             align-items: flex-end;
+            margin-bottom: 8px;
         }
         .bmi-calc-group input {
             flex: 1;
         }
         .bmi-calc-btn {
-            background: #0d9488;
+            background: #28a745;
             color: #fff;
             border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
+            padding: 10px 14px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.85em;
             font-weight: 600;
             white-space: nowrap;
         }
         .bmi-calc-btn:hover {
-            background: #0f766e;
+            background: #218838;
         }
         .bmi-result {
-            font-size: 0.8em;
+            font-size: 0.85em;
             margin-top: 5px;
             color: #555;
             font-weight: 600;
+        }
+        .predict-btn {
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 15px;
+        }
+        .predict-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(40,167,69,0.4);
+        }
+        .predict-again-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+        .predict-again-btn:hover {
+            background: #5a6fd6;
+        }
+        .result-section {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-top: 30px;
+        }
+        .result-section h2 {
+            color: #27ae60;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .result-card {
+            text-align: center;
+            padding: 20px;
+        }
+        .result-label {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .result-value {
+            font-size: 3em;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 5px;
+        }
+        .result-usd {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .details-grid p {
+            color: #555;
+            margin: 5px 0;
+        }
+        .user-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .user-details h3 {
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .error-section {
+            background: #fff5f5;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-top: 30px;
+            border: 2px solid #e74c3c;
+        }
+        .error-section h2 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.9;
+        }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .form-card { padding: 20px; }
+            .result-value { font-size: 2.2em; }
         }
     </style>
 </head>
@@ -96,238 +252,213 @@
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/history">History</a>
-            <span style="color:#0d9488;font-weight:600;">{{ username }}</span>
+            <span style="color:#667eea;font-weight:600;">{{ username }}</span>
             <a href="/logout">Logout</a>
         </div>
     </div>
 
-    <div class="container">
-        <div class="header">
-            <h1>Medical Insurance Cost Prediction</h1>
-            <p>Predict your estimated health insurance premium using Machine Learning</p>
-            <p class="subtitle">Powered by AI | Enhanced with Medical History & Lifestyle Data</p>
-        </div>
-
-        <div class="content">
-            <form action="/predict" method="POST">
-                <h3 class="section-title">Personal Information</h3>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h4>Age</h4>
-                        <input type="number" name="age" min="18" max="64" required placeholder="18-64" value="{{ age if age else '' }}">
-                    </div>
-                    <div class="feature-card">
-                        <h4>Gender</h4>
-                        <select name="sex" required>
-                            <option value="">Select</option>
-                            <option value="male" {{ 'selected' if sex == 'male' }}>Male</option>
-                            <option value="female" {{ 'selected' if sex == 'female' }}>Female</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>BMI (auto-calculate or enter directly)</h4>
-                        <div class="bmi-calc-group">
-                            <input type="number" id="height" min="100" max="250" step="1" placeholder="Height (cm)" oninput="calculateBMI()">
-                            <input type="number" id="weight" min="30" max="200" step="0.1" placeholder="Weight (kg)" oninput="calculateBMI()">
-                        </div>
-                        <input type="number" name="bmi" id="bmi" min="15" max="55" step="0.1" required placeholder="BMI" value="{{ bmi if bmi else '' }}">
-                        <div class="bmi-result" id="bmiResult"></div>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Children</h4>
-                        <select name="children" required>
-                            {% for i in range(6) %}
-                            <option value="{{ i }}" {{ 'selected' if children == i }}>{{ i }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Smoker</h4>
-                        <select name="smoker" required>
-                            <option value="">Select</option>
-                            <option value="yes" {{ 'selected' if smoker == 'yes' }}>Yes</option>
-                            <option value="no" {{ 'selected' if smoker == 'no' }}>No</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Region</h4>
-                        <select name="region" required>
-                            <option value="">Select</option>
-                            <option value="north" {{ 'selected' if region == 'north' }}>North India</option>
-                            <option value="south" {{ 'selected' if region == 'south' }}>South India</option>
-                            <option value="east" {{ 'selected' if region == 'east' }}>East India</option>
-                            <option value="west" {{ 'selected' if region == 'west' }}>West India</option>
-                        </select>
-                    </div>
-                </div>
-
-                <h3 class="section-title">Medical History</h3>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h4>Hospitalizations (5 yrs)</h4>
-                        <select name="hospitalizations">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5+</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Chronic Diseases</h4>
-                        <select name="chronic_diseases">
-                            <option value="0">None</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4+</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Pre-existing Condition</h4>
-                        <select name="pre_existing">
-                            <option value="0">No</option>
-                            <option value="1">Yes</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Family History</h4>
-                        <select name="family_history">
-                            <option value="0">None</option>
-                            <option value="1">One condition</option>
-                            <option value="2">Multiple</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Past Surgeries</h4>
-                        <select name="surgeries">
-                            <option value="0">0</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3+</option>
-                        </select>
-                    </div>
-                </div>
-
-                <h3 class="section-title">Lifestyle</h3>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <h4>Exercise Frequency</h4>
-                        <select name="exercise_freq">
-                            <option value="0">Never</option>
-                            <option value="1">Rarely</option>
-                            <option value="2" selected>Sometimes</option>
-                            <option value="3">Regular</option>
-                            <option value="4">Daily</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Alcohol</h4>
-                        <select name="alcohol">
-                            <option value="0">None</option>
-                            <option value="1" selected>Occasional</option>
-                            <option value="2">Moderate</option>
-                            <option value="3">Heavy</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Smoking Years</h4>
-                        <input type="number" name="smoking_years" min="0" max="30" value="0">
-                    </div>
-                    <div class="feature-card">
-                        <h4>Diet Quality</h4>
-                        <select name="diet_quality">
-                            <option value="1">Poor</option>
-                            <option value="2" selected>Fair</option>
-                            <option value="3">Good</option>
-                            <option value="4">Excellent</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Stress Level</h4>
-                        <select name="stress_level">
-                            <option value="1">Low</option>
-                            <option value="2" selected>Moderate</option>
-                            <option value="3">High</option>
-                            <option value="4">Very High</option>
-                        </select>
-                    </div>
-                    <div class="feature-card">
-                        <h4>Sleep Hours</h4>
-                        <input type="number" name="sleep_hours" min="4" max="10" step="0.5" value="7">
-                    </div>
-                    <div class="feature-card">
-                        <h4>Water Intake (L)</h4>
-                        <input type="number" name="water_intake" min="0.5" max="4" step="0.1" value="2">
-                    </div>
-                    <div class="feature-card">
-                        <h4>Sugar Intake</h4>
-                        <select name="sugar_intake">
-                            <option value="0">Low</option>
-                            <option value="1" selected>Moderate</option>
-                            <option value="2">High</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button type="submit" class="predict-btn">Predict Insurance Cost</button>
-            </form>
-
-            {% if show_result %}
-            <div class="result-section">
-                <h2>Prediction Result</h2>
-                <div class="result-card">
-                    <div class="result-label">Estimated Annual Insurance Premium:</div>
-                    <div class="result-value">{{ prediction }}</div>
-                    <div class="result-usd">({{ prediction_usd }} USD)</div>
-                    <div class="user-details">
-                        <h3>Input Summary:</h3>
-                        <div class="details-grid">
-                            <p><strong>Age:</strong> {{ age }}</p>
-                            <p><strong>Gender:</strong> {{ sex }}</p>
-                            <p><strong>BMI:</strong> {{ bmi }}</p>
-                            <p><strong>Children:</strong> {{ children }}</p>
-                            <p><strong>Smoker:</strong> {{ smoker }}</p>
-                            <p><strong>Region:</strong> {{ region }}</p>
-                        </div>
-                    </div>
-                    <a href="/" class="predict-again-btn">Predict Again</a>
-                </div>
-            </div>
-            {% endif %}
-
-            {% if error %}
-            <div class="error-section">
-                <h2>Error</h2>
-                <p>{{ error }}</p>
-                <a href="/" class="predict-again-btn">Try Again</a>
-            </div>
-            {% endif %}
-        </div>
+    <div class="header">
+        <h1>Medical Insurance Cost Prediction - India</h1>
+        <p>Predict your estimated health insurance premium using Machine Learning</p>
+        <p class="tagline">Powered by AI | Made for Indian Users</p>
     </div>
 
-    <script>
-        function calculateBMI() {
-            var height = parseFloat(document.getElementById('height').value);
-            var weight = parseFloat(document.getElementById('weight').value);
-            var resultDiv = document.getElementById('bmiResult');
-            if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
-                resultDiv.innerHTML = '';
-                return;
-            }
-            var heightM = height / 100;
-            var bmi = weight / (heightM * heightM);
-            bmi = Math.round(bmi * 10) / 10;
-            document.getElementById('bmi').value = bmi;
-            var category = '', color = '';
-            if (bmi < 18.5) { category = 'Underweight'; color = '#3498db'; }
-            else if (bmi < 25) { category = 'Normal'; color = '#27ae60'; }
-            else if (bmi < 30) { category = 'Overweight'; color = '#f39c12'; }
-            else { category = 'Obese'; color = '#e74c3c'; }
-            resultDiv.innerHTML = 'BMI: <strong>' + bmi + '</strong> — ' + category;
-            resultDiv.style.color = color;
-        }
-    </script>
+    <div class="form-card">
+        <form action="/predict" method="POST">
+            <h3 class="section-title">Enter Your Details</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>Age (18-64)</h4>
+                    <input type="number" name="age" min="18" max="64" required placeholder="Enter your age" value="{{ age if age else '' }}">
+                </div>
+                <div class="feature-card">
+                    <h4>Gender</h4>
+                    <select name="sex" required>
+                        <option value="">Select Gender</option>
+                        <option value="male" {{ 'selected' if sex == 'male' }}>Male</option>
+                        <option value="female" {{ 'selected' if sex == 'female' }}>Female</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>BMI (15-55)</h4>
+                    <input type="number" name="bmi" id="bmi" min="15" max="55" step="0.1" required placeholder="e.g., 25.5" value="{{ bmi if bmi else '' }}">
+                </div>
+                <div class="feature-card">
+                    <h4>Number of Children</h4>
+                    <select name="children" required>
+                        {% for i in range(6) %}
+                        <option value="{{ i }}" {{ 'selected' if children == i }}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Smoker</h4>
+                    <select name="smoker" required>
+                        <option value="">Select Option</option>
+                        <option value="yes" {{ 'selected' if smoker == 'yes' }}>Yes</option>
+                        <option value="no" {{ 'selected' if smoker == 'no' }}>No</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Region / State</h4>
+                    <select name="region" required>
+                        <option value="">Select Region</option>
+                        <option value="north" {{ 'selected' if region == 'north' }}>North India (Delhi, UP, Punjab, HP, J&K, UK)</option>
+                        <option value="south" {{ 'selected' if region == 'south' }}>South India (TN, Karnataka, Kerala, AP, Telangana)</option>
+                        <option value="east" {{ 'selected' if region == 'east' }}>East India (West Bengal, Odisha, Bihar, Jharkhand)</option>
+                        <option value="west" {{ 'selected' if region == 'west' }}>West India (Maharashtra, Gujarat, Rajasthan, Goa)</option>
+                    </select>
+                </div>
+            </div>
+
+            <h3 class="section-title">Medical History</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>Hospitalizations (5 yrs)</h4>
+                    <select name="hospitalizations">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5+</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Chronic Diseases</h4>
+                    <select name="chronic_diseases">
+                        <option value="0">None</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4+</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Pre-existing Condition</h4>
+                    <select name="pre_existing">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Family History</h4>
+                    <select name="family_history">
+                        <option value="0">None</option>
+                        <option value="1">One condition</option>
+                        <option value="2">Multiple</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Past Surgeries</h4>
+                    <select name="surgeries">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3+</option>
+                    </select>
+                </div>
+            </div>
+
+            <h3 class="section-title">Lifestyle</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h4>Exercise Frequency</h4>
+                    <select name="exercise_freq">
+                        <option value="0">Never</option>
+                        <option value="1">Rarely</option>
+                        <option value="2" selected>Sometimes</option>
+                        <option value="3">Regular</option>
+                        <option value="4">Daily</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Alcohol</h4>
+                    <select name="alcohol">
+                        <option value="0">None</option>
+                        <option value="1" selected>Occasional</option>
+                        <option value="2">Moderate</option>
+                        <option value="3">Heavy</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Smoking Years</h4>
+                    <input type="number" name="smoking_years" min="0" max="30" value="0">
+                </div>
+                <div class="feature-card">
+                    <h4>Diet Quality</h4>
+                    <select name="diet_quality">
+                        <option value="1">Poor</option>
+                        <option value="2" selected>Fair</option>
+                        <option value="3">Good</option>
+                        <option value="4">Excellent</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Stress Level</h4>
+                    <select name="stress_level">
+                        <option value="1">Low</option>
+                        <option value="2" selected>Moderate</option>
+                        <option value="3">High</option>
+                        <option value="4">Very High</option>
+                    </select>
+                </div>
+                <div class="feature-card">
+                    <h4>Sleep Hours</h4>
+                    <input type="number" name="sleep_hours" min="4" max="10" step="0.5" value="7">
+                </div>
+                <div class="feature-card">
+                    <h4>Water Intake (L)</h4>
+                    <input type="number" name="water_intake" min="0.5" max="4" step="0.1" value="2">
+                </div>
+                <div class="feature-card">
+                    <h4>Sugar Intake</h4>
+                    <select name="sugar_intake">
+                        <option value="0">Low</option>
+                        <option value="1" selected>Moderate</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="predict-btn">Predict Insurance Cost</button>
+        </form>
+
+        {% if show_result %}
+        <div class="result-section">
+            <h2>Prediction Result</h2>
+            <div class="result-card">
+                <div class="result-label">Estimated Annual Insurance Premium:</div>
+                <div class="result-value">{{ prediction }}</div>
+                <div class="result-usd">({{ prediction_usd }} USD)</div>
+                <div class="user-details">
+                    <h3>Input Summary:</h3>
+                    <div class="details-grid">
+                        <p><strong>Age:</strong> {{ age }}</p>
+                        <p><strong>Gender:</strong> {{ sex }}</p>
+                        <p><strong>BMI:</strong> {{ bmi }}</p>
+                        <p><strong>Children:</strong> {{ children }}</p>
+                        <p><strong>Smoker:</strong> {{ smoker }}</p>
+                        <p><strong>Region:</strong> {{ region }}</p>
+                    </div>
+                </div>
+                <a href="/" class="predict-again-btn">Predict Again</a>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error-section">
+            <h2>Error</h2>
+            <p>{{ error }}</p>
+            <a href="/" class="predict-again-btn">Try Again</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <p>Medical Insurance Cost Prediction | Built with Streamlit, Scikit-learn & Neural Networks</p>
+        <p>Developer: Krutika Mohanty | B.Tech Computer Science</p>
+    </div>
 </body>
 </html>
