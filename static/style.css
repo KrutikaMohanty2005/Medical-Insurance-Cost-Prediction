@@ -1,0 +1,521 @@
+"""
+Medical Insurance Cost Prediction - CSS Styles
+This file contains all styling for the web application.
+"""
+
+/* ============================================================
+   GLOBAL STYLES
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* ============================================================
+   CONTAINER STYLES
+   ============================================================ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   HEADER STYLES
+   ============================================================ */
+.header {
+    text-align: center;
+    color: white;
+    padding: 30px 20px;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* ============================================================
+   FORM SECTION STYLES
+   ============================================================ */
+.form-section {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.form-section h2 {
+    color: #333;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #888;
+    font-size: 0.9em;
+}
+
+/* ============================================================
+   BUTTON STYLES
+   ============================================================ */
+.predict-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+}
+
+.predict-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.predict-btn:active {
+    transform: translateY(0);
+}
+
+.predict-again-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: #667eea;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s;
+    margin-top: 20px;
+}
+
+.predict-again-btn:hover {
+    background: #5a6fd6;
+}
+
+/* ============================================================
+   RESULT SECTION STYLES
+   ============================================================ */
+.result-section {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.result-section h2 {
+    color: #27ae60;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.result-card {
+    text-align: center;
+    padding: 20px;
+}
+
+.result-label {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.result-value {
+    font-size: 3em;
+    font-weight: bold;
+    color: #27ae60;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-usd {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.insurance-info {
+    background: #e8f5e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.insurance-info h4 {
+    color: #27ae60;
+    margin-bottom: 10px;
+}
+
+.insurance-info ul {
+    margin-left: 20px;
+}
+
+.insurance-info li {
+    margin: 5px 0;
+    color: #555;
+}
+
+.user-details {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.user-details h3 {
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #667eea;
+}
+
+.user-details p {
+    margin: 8px 0;
+    color: #555;
+}
+
+/* ============================================================
+   ERROR SECTION STYLES
+   ============================================================ */
+.error-section {
+    background: #fff5f5;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    border: 2px solid #e74c3c;
+}
+
+.error-section h2 {
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+
+/* ============================================================
+   FEATURES SECTION STYLES
+   ============================================================ */
+.features-section {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.features-section h2 {
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.feature-card {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h3 {
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER STYLES
+   ============================================================ */
+.footer {
+    text-align: center;
+    color: white;
+    padding: 20px;
+    opacity: 0.9;
+}
+
+.footer p {
+    margin: 5px 0;
+}
+
+/* ============================================================
+   BMI CALCULATOR STYLES
+   ============================================================ */
+.bmi-calculator {
+    margin-top: 10px;
+}
+
+.bmi-toggle {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.bmi-toggle:hover {
+    background: #219a52;
+}
+
+.bmi-calc-section {
+    background: #f0f8f0;
+    border: 2px solid #27ae60;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 10px;
+}
+
+.calc-title {
+    font-weight: 600;
+    color: #27ae60;
+    margin-bottom: 15px;
+}
+
+.calc-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.calc-row label {
+    width: 100px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.calc-row input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.calc-result {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.bmi-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.use-bmi-btn {
+    width: 100%;
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.use-bmi-btn:hover {
+    background: #2980b9;
+}
+
+/* ============================================================
+   REGION SELECTOR STYLES - INDIAN THEME
+   ============================================================ */
+.region-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.region-option {
+    position: relative;
+}
+
+.region-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.region-label {
+    display: block;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.region-label:hover {
+    border-color: #FF9933;
+    background: #fff5eb;
+}
+
+/* North India - Saffron */
+.region-label.north:hover,
+.region-option input[type="radio"]:checked + .region-label.north {
+    border-color: #FF9933;
+    background: linear-gradient(135deg, #FF9933 0%, #e68a2e 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3);
+}
+
+/* South India - Green */
+.region-label.south:hover,
+.region-option input[type="radio"]:checked + .region-label.south {
+    border-color: #138808;
+    background: linear-gradient(135deg, #138808 0%, #0f6b06 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(19, 136, 8, 0.3);
+}
+
+/* East India - Blue */
+.region-label.east:hover,
+.region-option input[type="radio"]:checked + .region-label.east {
+    border-color: #000080;
+    background: linear-gradient(135deg, #000080 0%, #000066 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 128, 0.3);
+}
+
+/* West India - Purple */
+.region-label.west:hover,
+.region-option input[type="radio"]:checked + .region-label.west {
+    border-color: #9370DB;
+    background: linear-gradient(135deg, #9370DB 0%, #7b5fc4 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(147, 112, 219, 0.3);
+}
+
+.region-name {
+    display: block;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.region-desc {
+    display: block;
+    font-size: 12px;
+    opacity: 0.9;
+    line-height: 1.4;
+}
+
+/* ============================================================
+   MADE IN INDIA BADGE
+   ============================================================ */
+.made-in-india {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #FF9933;
+}
+
+/* ============================================================
+   SUBTITLE STYLES
+   ============================================================ */
+.subtitle {
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-top: 5px;
+}
+
+/* ============================================================
+   RESPONSIVE DESIGN
+   ============================================================ */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .form-section,
+    .result-section,
+    .features-section {
+        padding: 20px;
+    }
+
+    .result-value {
+        font-size: 2.2em;
+    }
+}
