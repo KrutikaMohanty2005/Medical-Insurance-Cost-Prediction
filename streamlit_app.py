@@ -22,49 +22,97 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    .stApp { background: #0a0a0a; }
-    .main-header { font-size: 2.5rem; color: #00d4ff !important; text-align: center; padding: 1rem; font-weight: 700; }
-    .sub-header { font-size: 1.1rem; color: #cccccc !important; text-align: center; margin-bottom: 2rem; }
-    .section-header { 
-        color: #00d4ff !important; 
-        border-bottom: 3px solid #00d4ff; 
-        padding-bottom: 8px; 
-        font-weight: 700; 
-        font-size: 1.3rem;
-        margin-top: 1.5rem;
+    .stApp {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
-    h3 { color: #00d4ff !important; font-weight: 700 !important; }
-    label { font-weight: 600 !important; color: #ffffff !important; }
-    [data-testid="stSidebar"] { background: #1a1a1a !important; }
-    [data-testid="stSidebar"] label { color: #ffffff !important; }
-    [data-testid="stSidebar"] .stRadio label { color: #ffffff !important; }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color: #00d4ff !important; }
-    [data-testid="stSidebar"] p { color: #cccccc !important; }
-    [data-testid="stSidebar"] .stSuccess { background: rgba(0,212,255,0.2) !important; }
-    [data-testid="stSidebar"] .stSuccess p { color: #ffffff !important; }
-    [data-testid="stSidebar"] .stError p { color: #ff6b6b !important; }
-    .stButton > button { 
-        background: #00d4ff; 
-        color: #000000; 
-        border: none; 
-        padding: 0.7rem 2rem; 
+    .stApp > header { display: none; }
+    .block-container {
+        padding-top: 1rem !important;
+    }
+    .main-header {
+        font-size: 2.5rem;
+        color: #ffffff !important;
+        text-align: center;
+        padding: 1rem 0 0.2rem 0;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .sub-header {
+        font-size: 1.1rem;
+        color: #ffffff !important;
+        text-align: center;
+        margin-bottom: 0.2rem;
+        opacity: 0.95;
+    }
+    .tagline {
+        font-size: 0.95rem;
+        color: #ffffff !important;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+    }
+    .form-card {
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 2rem 2.5rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        margin-bottom: 2rem;
+    }
+    .section-header {
+        color: #333333 !important;
+        border-bottom: 3px solid #667eea;
+        padding-bottom: 8px;
+        font-weight: 700;
+        font-size: 1.3rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    h3 { color: #333333 !important; font-weight: 700 !important; }
+    label { font-weight: 600 !important; color: #333333 !important; }
+    .stSelectbox label, .stSlider label, .stNumberInput label, .stRadio label {
+        color: #333333 !important;
+        font-weight: 600 !important;
+    }
+    [data-testid="stSidebar"] { background: #f0f2f6 !important; }
+    [data-testid="stSidebar"] label { color: #333333 !important; }
+    [data-testid="stSidebar"] .stRadio label { color: #333333 !important; }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color: #667eea !important; }
+    [data-testid="stSidebar"] p { color: #555555 !important; }
+    [data-testid="stSidebar"] .stSuccess { background: rgba(102,126,234,0.15) !important; border-radius: 8px; }
+    [data-testid="stSidebar"] .stSuccess p { color: #333333 !important; }
+    [data-testid="stSidebar"] .stError p { color: #e74c3c !important; }
+    .stButton > button {
+        background: #28a745;
+        color: #ffffff;
+        border: none;
+        padding: 0.6rem 1.5rem;
         font-weight: 700;
         border-radius: 8px;
-        font-size: 1rem;
-        width: 100%;
+        font-size: 0.95rem;
     }
-    .stButton > button:hover { background: #00b8e6; }
-    .stSelectbox, .stSlider, .stNumberInput { color: #ffffff !important; }
-    div[data-testid="stMetric"] { 
-        background: #1a1a1a; 
-        padding: 1rem; 
-        border-radius: 10px; 
-        border: 1px solid #333;
+    .stButton > button:hover { background: #218838; }
+    div[data-testid="stMetric"] {
+        background: #ffffff;
+        padding: 1rem;
+        border-radius: 10px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
-    div[data-testid="stMetric"] label { color: #888 !important; }
-    div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #00d4ff !important; }
-    .stDataFrame { background: #1a1a1a !important; }
-    hr { border-color: #333 !important; }
+    div[data-testid="stMetric"] label { color: #666 !important; }
+    div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #667eea !important; }
+    hr { border-color: #e0e0e0 !important; }
+    .stRadio > div { display: flex; gap: 10px; flex-wrap: wrap; }
+    .stRadio > div > label {
+        background: #f8f9fa;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        min-width: 150px;
+    }
+    .stRadio > div > label:hover { border-color: #667eea; background: #f0f2ff; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -182,45 +230,56 @@ USD_TO_INR = 83.0
 # ============================================================
 # MAIN CONTENT - PREDICTION FORM
 # ============================================================
-st.markdown('<h1 class="main-header">Medical Insurance Cost Prediction</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="main-header">Medical Insurance Cost Prediction - India</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Predict your estimated health insurance premium using Machine Learning</p>', unsafe_allow_html=True)
+st.markdown('<p class="tagline">Powered by AI | Made for Indian Users</p>', unsafe_allow_html=True)
 
 # Model selection
 model_choice = st.radio("Select Model", ["Random Forest (Recommended)", "Neural Network (MLP)"], horizontal=True)
 
+st.markdown('<div class="form-card">', unsafe_allow_html=True)
+st.markdown('<h3 class="section-header">Enter Your Details</h3>', unsafe_allow_html=True)
+
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<h3 class="section-header">Personal Information</h3>', unsafe_allow_html=True)
-    age = st.slider("Age", 18, 64, 30)
-    sex = st.selectbox("Gender", ["male", "female"])
-
-    bmi_calc_col1, bmi_calc_col2, bmi_calc_col3 = st.columns(3)
-    with bmi_calc_col1:
-        height_cm = st.number_input("Height (cm)", 100.0, 250.0, 170.0, 1.0, key="height_calc")
-    with bmi_calc_col2:
-        weight_kg = st.number_input("Weight (kg)", 30.0, 200.0, 70.0, 0.5, key="weight_calc")
-    with bmi_calc_col3:
-        if st.button("Calculate BMI", key="calc_bmi_btn"):
-            height_m = height_cm / 100
-            calc_bmi = weight_kg / (height_m * height_m)
-            st.session_state.bmi_val = round(calc_bmi, 1)
-            cat = "Underweight" if calc_bmi < 18.5 else "Normal" if calc_bmi < 25 else "Overweight" if calc_bmi < 30 else "Obese"
-            st.success(f"BMI: {calc_bmi:.1f} ({cat})")
-
-    bmi = st.number_input("BMI", 15.0, 55.0, st.session_state.get("bmi_val", 25.0), 0.1)
-    children = st.selectbox("Children", [0, 1, 2, 3, 4, 5])
-    smoker = st.selectbox("Smoker", ["yes", "no"])
-    region = st.selectbox("Region", ["north", "south", "east", "west"])
+    age = st.number_input("Age (18-64):", min_value=18, max_value=64, value=30, placeholder="Enter your age")
+    sex = st.selectbox("Gender:", ["Select Gender", "male", "female"])
+    region = st.selectbox("Region / State:", ["Select Region", "north", "south", "east", "west"])
 
 with col2:
-    st.markdown('<h3 class="section-header">Medical History</h3>', unsafe_allow_html=True)
+    bmi = st.number_input("BMI (15-55):", min_value=15.0, max_value=55.0, value=25.0, step=0.1, placeholder="e.g., 25.5")
+    children = st.selectbox("Number of Children:", [0, 1, 2, 3, 4, 5])
+    smoker = st.selectbox("Smoker:", ["Select Option", "yes", "no"])
+
+st.markdown("---")
+
+# BMI Calculator
+with st.expander("Calculate BMI Here", expanded=False):
+    bmi_c1, bmi_c2 = st.columns(2)
+    with bmi_c1:
+        height_cm = st.number_input("Height (cm)", 100.0, 250.0, 170.0, 1.0, key="height_calc")
+    with bmi_c2:
+        weight_kg = st.number_input("Weight (kg)", 30.0, 200.0, 70.0, 0.5, key="weight_calc")
+    if st.button("Calculate BMI", key="calc_bmi_btn"):
+        height_m = height_cm / 100
+        calc_bmi = weight_kg / (height_m * height_m)
+        st.session_state.bmi_val = round(calc_bmi, 1)
+        cat = "Underweight" if calc_bmi < 18.5 else "Normal" if calc_bmi < 25 else "Overweight" if calc_bmi < 30 else "Obese"
+        st.success(f"BMI: {calc_bmi:.1f} ({cat})")
+
+st.markdown("---")
+st.markdown('<h3 class="section-header">Medical History</h3>', unsafe_allow_html=True)
+col3, col4 = st.columns(2)
+with col3:
     hospitalizations = st.selectbox("Hospitalizations (5 yrs)", [0, 1, 2, 3, 4, 5])
     chronic_diseases = st.selectbox("Chronic Diseases", [0, 1, 2, 3, 4])
     pre_existing = st.selectbox("Pre-existing Condition", [0, 1])
+with col4:
     family_history = st.selectbox("Family History", [0, 1, 2])
     surgeries = st.selectbox("Past Surgeries", [0, 1, 2, 3])
 
+st.markdown("---")
 st.markdown('<h3 class="section-header">Lifestyle</h3>', unsafe_allow_html=True)
 lcol1, lcol2, lcol3, lcol4 = st.columns(4)
 
@@ -312,6 +371,8 @@ if st.button("Predict Insurance Cost", type="primary"):
         users[st.session_state.username]['predictions'].append(pred_data)
         save_users(users)
 
+st.markdown('</div>', unsafe_allow_html=True)
+
 # ============================================================
 # MODEL PERFORMANCE
 # ============================================================
@@ -350,7 +411,7 @@ st.pyplot(fig)
 
 st.markdown("---")
 st.markdown("""
-<div style='text-align: center; color: #555; padding: 1rem;'>
+<div style='text-align: center; color: #ffffff; padding: 1rem; opacity: 0.9;'>
     <p>Medical Insurance Cost Prediction | Built with Streamlit, Scikit-learn & Neural Networks</p>
     <p>Developer: Krutika Mohanty | B.Tech Computer Science</p>
 </div>
