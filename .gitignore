@@ -48,5 +48,5 @@ data/medical_insurance.csv
 *.log
 logs/
 
-# Screenshots (add manually)
-screenshots/
+# User data (generated at runtime)
+data/users.json

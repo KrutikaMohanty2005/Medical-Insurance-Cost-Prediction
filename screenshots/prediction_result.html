@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Insurance Cost Prediction - India</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Medical Insurance Cost Prediction - India</h1>
+            <p>Predict your estimated health insurance premium using Machine Learning</p>
+            <p class="subtitle">Powered by AI | Made for Indian Users</p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Prediction Form -->
+            <div class="form-section">
+                <h2>Enter Your Details</h2>
+                <form action="/predict" method="POST">
+                    <!-- Age Input -->
+                    <div class="form-group">
+                        <label for="age">Age (18-64):</label>
+                        <input type="number" id="age" name="age" min="18" max="64"
+                               value="30.0" required placeholder="Enter your age">
+                    </div>
+
+                    <!-- Gender Selection -->
+                    <div class="form-group">
+                        <label for="sex">Gender:</label>
+                        <select id="sex" name="sex" required>
+                            <option value="">Select Gender</option>
+                            <option value="male" >Male</option>
+                            <option value="female" selected>Female</option>
+                        </select>
+                    </div>
+
+                    <!-- BMI Section with Calculator -->
+                    <div class="form-group">
+                        <label for="bmi">BMI (15-55):</label>
+                        <input type="number" id="bmi" name="bmi" min="15" max="55" step="0.1"
+                               value="28.5" required placeholder="e.g., 25.5">
+
+                        <!-- BMI Calculator Toggle -->
+                        <div class="bmi-calculator">
+                            <button type="button" class="bmi-toggle" onclick="toggleBMICalculator()">
+                                Calculate BMI Here
+                            </button>
+
+                            <!-- Hidden Calculator Section -->
+                            <div id="bmiCalculator" class="bmi-calc-section" style="display: none;">
+                                <p class="calc-title">Quick BMI Calculator</p>
+
+                                <div class="calc-row">
+                                    <label>Weight (kg):</label>
+                                    <input type="number" id="weight" min="30" max="200" step="0.1"
+                                           placeholder="e.g., 70" oninput="calculateBMI()">
+                                </div>
+
+                                <div class="calc-row">
+                                    <label>Height (cm):</label>
+                                    <input type="number" id="height" min="100" max="250" step="0.1"
+                                           placeholder="e.g., 175" oninput="calculateBMI()">
+                                </div>
+
+                                <div class="calc-result">
+                                    <span>Your BMI: </span>
+                                    <span id="calculatedBMI" class="bmi-value">--</span>
+                                </div>
+
+                                <button type="button" class="use-bmi-btn" onclick="useBMICalculated()">
+                                    Use This BMI
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Children Input -->
+                    <div class="form-group">
+                        <label for="children">Number of Children:</label>
+                        <select id="children" name="children" required>
+                            <option value="0" >0</option>
+                            <option value="1" >1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3" >3</option>
+                            <option value="4" >4</option>
+                            <option value="5" >5</option>
+                        </select>
+                    </div>
+
+                    <!-- Smoker Selection -->
+                    <div class="form-group">
+                        <label for="smoker">Smoker:</label>
+                        <select id="smoker" name="smoker" required>
+                            <option value="">Select Option</option>
+                            <option value="yes" >Yes</option>
+                            <option value="no" selected>No</option>
+                        </select>
+                    </div>
+
+                    <!-- Region Selection - Indian States -->
+                    <div class="form-group">
+                        <label for="region">Region / State:</label>
+                        <div class="region-selector">
+                            <div class="region-option">
+                                <input type="radio" id="north" name="region" value="north"
+                                       selected required>
+                                <label for="north" class="region-label north">
+                                    <span class="region-name">North India</span>
+                                    <span class="region-desc">Delhi, UP, Punjab, Haryana, HP, J&K, UK</span>
+                                </label>
+                            </div>
+                            <div class="region-option">
+                                <input type="radio" id="south" name="region" value="south"
+                                       >
+                                <label for="south" class="region-label south">
+                                    <span class="region-name">South India</span>
+                                    <span class="region-desc">TN, Karnataka, Kerala, AP, Telangana</span>
+                                </label>
+                            </div>
+                            <div class="region-option">
+                                <input type="radio" id="east" name="region" value="east"
+                                       >
+                                <label for="east" class="region-label east">
+                                    <span class="region-name">East India</span>
+                                    <span class="region-desc">West Bengal, Bihar, Odisha, Jharkhand, NE</span>
+                                </label>
+                            </div>
+                            <div class="region-option">
+                                <input type="radio" id="west" name="region" value="west"
+                                       >
+                                <label for="west" class="region-label west">
+                                    <span class="region-name">West India</span>
+                                    <span class="region-desc">Maharashtra, Gujarat, Rajasthan, Goa</span>
+                                </label>
+                            </div>
+                        </div>
+                        <small>Select your region in India</small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="predict-btn">Predict Insurance Cost</button>
+                </form>
+            </div>
+
+            <!-- Result Section -->
+            
+            <div class="result-section">
+                <h2>Prediction Result</h2>
+                <div class="result-card">
+                    <div class="result-label">Estimated Annual Insurance Premium:</div>
+                    <div class="result-value">₹269,520</div>
+                    <div class="result-usd">($3,247 USD)</div>
+
+                    <div class="user-details">
+                        <h3>Your Input Details:</h3>
+                        <div class="details-grid">
+                            <p><strong>Age:</strong> 30.0 years</p>
+                            <p><strong>Gender:</strong> female</p>
+                            <p><strong>BMI:</strong> 28.5</p>
+                            <p><strong>Children:</strong> 2</p>
+                            <p><strong>Smoker:</strong> no</p>
+                            <p><strong>Region:</strong> north</p>
+                        </div>
+
+                        <div class="insurance-info">
+                            <h4>Insurance Premium Information:</h4>
+                            <ul>
+                                <li>This is an estimated annual premium</li>
+                                <li>Actual premium may vary based on insurance provider</li>
+                                <li>Smokers pay significantly higher premiums</li>
+                                <li>Maintaining good BMI can reduce your premium</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <a href="/" class="predict-again-btn">Predict Again</a>
+                </div>
+            </div>
+            
+
+            <!-- Error Section -->
+            
+        </div>
+
+        <!-- Features Section -->
+        <div class="features-section">
+            <h2>About This Project</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>AI-Powered</h3>
+                    <p>Uses Random Forest algorithm trained on medical records to predict insurance costs</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Indian Focused</h3>
+                    <p>Designed for Indian users with INR currency and Indian state regions</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Key Factors</h3>
+                    <p>Smoking status, BMI, Age, and Region are the main cost predictors</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Medical Insurance Cost Prediction - India | Built with Flask & Scikit-learn</p>
+            <p>Developer: Krutika Mohanty | B.Tech Computer Science</p>
+            <p class="made-in-india">Made with ❤️ in India</p>
+        </div>
+</div>
+
+<!-- JavaScript for BMI Calculator -->
+<script>
+    // Toggle BMI Calculator visibility
+    function toggleBMICalculator() {
+        var calc = document.getElementById('bmiCalculator');
+        if (calc.style.display === 'none') {
+            calc.style.display = 'block';
+        } else {
+            calc.style.display = 'none';
+        }
+    }
+
+    // Calculate BMI from weight and height
+    function calculateBMI() {
+        var weight = parseFloat(document.getElementById('weight').value);
+        var height = parseFloat(document.getElementById('height').value);
+
+        if (weight > 0 && height > 0) {
+            // Convert height from cm to meters
+            var heightInMeters = height / 100;
+            // Calculate BMI
+            var bmi = weight / (heightInMeters * heightInMeters);
+            // Display result with 1 decimal place
+            document.getElementById('calculatedBMI').textContent = bmi.toFixed(1);
+        } else {
+            document.getElementById('calculatedBMI').textContent = '--';
+        }
+    }
+
+    // Use the calculated BMI in the main form
+    function useBMICalculated() {
+        var bmiValue = document.getElementById('calculatedBMI').textContent;
+        if (bmiValue !== '--') {
+            document.getElementById('bmi').value = bmiValue;
+            document.getElementById('bmiCalculator').style.display = 'none';
+        } else {
+            alert('Please enter weight and height first!');
+        }
+    }
+</script>
+</body>
+</html>
