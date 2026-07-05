@@ -1,19 +1,18 @@
 """
-Medical Insurance Cost Prediction - Streamlit Web App
-A Machine Learning project that predicts medical insurance costs.
+Medical Insurance Cost Prediction - Streamlit Web App (Enhanced)
+Features: Medical History, Lifestyle, Deep Learning, User Authentication
 
 Author: Krutika Mohanty
 """
 
 import streamlit as st
-import joblib
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
+import json
 import os
+import hashlib
 
-# Page configuration
 st.set_page_config(
     page_title="Medical Insurance Cost Prediction",
     page_icon="🏥",
@@ -21,110 +20,181 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
 st.markdown("""
 <style>
-    .main-header {
-        font-size: 2.5rem;
-        color: #2E86AB;
-        text-align: center;
-        padding: 1rem;
-    }
-    .sub-header {
-        font-size: 1.2rem;
-        color: #666;
-        text-align: center;
-    }
+    .main-header { font-size: 2.5rem; color: #2E86AB; text-align: center; padding: 1rem; }
+    .sub-header { font-size: 1.2rem; color: #666; text-align: center; }
+    .section-header { color: #2E86AB; border-bottom: 2px solid #2E86AB; padding-bottom: 5px; }
 </style>
 """, unsafe_allow_html=True)
 
+# ============================================================
+# USER AUTHENTICATION
+# ============================================================
+USERS_FILE = 'data/users.json'
 
-def train_model_from_data():
-    """Retrain model from CSV data if pickle files fail to load."""
-    from sklearn.linear_model import LinearRegression
+def load_users():
+    if os.path.exists(USERS_FILE):
+        with open(USERS_FILE, 'r') as f:
+            return json.load(f)
+    return {}
+
+def save_users(users):
+    os.makedirs('data', exist_ok=True)
+    with open(USERS_FILE, 'w') as f:
+        json.dump(users, f, indent=2)
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Session state
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
+    st.session_state.username = ''
+
+# Auth sidebar
+st.sidebar.markdown("---")
+if st.session_state.logged_in:
+    st.sidebar.success(f"Logged in as: **{st.session_state.username}**")
+    if st.sidebar.button("Logout"):
+        st.session_state.logged_in = False
+        st.session_state.username = ''
+        st.rerun()
+else:
+    auth_tab = st.sidebar.radio("Authentication", ["Login", "Register"])
+    if auth_tab == "Login":
+        login_user = st.sidebar.text_input("Username", key="login_user")
+        login_pass = st.sidebar.text_input("Password", type="password", key="login_pass")
+        if st.sidebar.button("Login"):
+            users = load_users()
+            if login_user in users and users[login_user]['password'] == hash_password(login_pass):
+                st.session_state.logged_in = True
+                st.session_state.username = login_user
+                st.rerun()
+            else:
+                st.sidebar.error("Invalid credentials")
+    else:
+        reg_user = st.sidebar.text_input("Username", key="reg_user")
+        reg_email = st.sidebar.text_input("Email", key="reg_email")
+        reg_pass = st.sidebar.text_input("Password", type="password", key="reg_pass")
+        if st.sidebar.button("Register"):
+            if len(reg_pass) < 6:
+                st.sidebar.error("Password must be 6+ characters")
+            else:
+                users = load_users()
+                if reg_user in users:
+                    st.sidebar.error("Username taken")
+                else:
+                    users[reg_user] = {'password': hash_password(reg_pass), 'email': reg_email, 'predictions': []}
+                    save_users(users)
+                    st.sidebar.success("Registered! Now login")
+
+# ============================================================
+# MODEL LOADING
+# ============================================================
+@st.cache_resource
+def load_or_train_model():
     from sklearn.ensemble import RandomForestRegressor
+    from sklearn.preprocessing import StandardScaler, LabelEncoder
     from sklearn.model_selection import train_test_split
-    from sklearn.preprocessing import StandardScaler
+    from sklearn.neural_network import MLPRegressor
 
-    df = pd.read_csv('data/insurance_cleaned.csv')
-    df_encoded = pd.get_dummies(df, columns=['sex', 'smoker', 'region'], drop_first=True)
+    df = pd.read_csv('data/insurance_enhanced.csv')
+    df_encoded = df.copy()
 
-    X = df_encoded.drop('charges', axis=1)
+    df_encoded['sex_encoded'] = LabelEncoder().fit_transform(df_encoded['sex'])
+    df_encoded['smoker_encoded'] = LabelEncoder().fit_transform(df_encoded['smoker'])
+
+    region_dummies = pd.get_dummies(df_encoded['region'], prefix='region', dtype=int)
+    df_encoded = pd.concat([df_encoded, region_dummies], axis=1)
+
+    bmi_dummies = pd.get_dummies(df_encoded['bmi_category'], prefix='bmi_cat', dtype=int)
+    df_encoded = pd.concat([df_encoded, bmi_dummies], axis=1)
+
+    feature_columns = [
+        'age', 'sex_encoded', 'bmi', 'children', 'smoker_encoded',
+        'region_northeast', 'region_northwest', 'region_southeast', 'region_southwest',
+        'hospitalizations', 'chronic_diseases', 'pre_existing', 'family_history', 'surgeries',
+        'exercise_freq', 'alcohol', 'smoking_years', 'diet_quality', 'stress_level',
+        'sleep_hours', 'water_intake', 'sugar_intake', 'health_risk_score',
+        'bmi_cat_normal', 'bmi_cat_obese', 'bmi_cat_overweight', 'bmi_cat_underweight'
+    ]
+
+    X = df_encoded[feature_columns]
     y = df_encoded['charges']
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
     scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
+    X_scaled = scaler.fit_transform(X)
 
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
-    model.fit(X_train_scaled, y_train)
+    model = RandomForestRegressor(n_estimators=200, random_state=42, n_jobs=-1)
+    model.fit(X, y)
 
-    feature_columns = X.columns.tolist()
+    mlp = MLPRegressor(hidden_layer_sizes=(128, 64, 32), activation='relu', solver='adam',
+                       max_iter=500, random_state=42, early_stopping=True)
+    mlp.fit(X_scaled, y)
 
-    os.makedirs('models', exist_ok=True)
-    joblib.dump(model, 'models/insurance_model.pkl')
-    joblib.dump(scaler, 'models/scaler.pkl')
-    joblib.dump(feature_columns, 'models/feature_columns.pkl')
+    return model, mlp, scaler, feature_columns
 
-    return model, scaler, feature_columns
-
-
-@st.cache_resource
-def load_model():
-    try:
-        model = joblib.load('models/insurance_model.pkl')
-        scaler = joblib.load('models/scaler.pkl')
-        feature_columns = joblib.load('models/feature_columns.pkl')
-        return model, scaler, feature_columns
-    except Exception:
-        model, scaler, feature_columns = train_model_from_data()
-        return model, scaler, feature_columns
-
-
-model, scaler, feature_columns = load_model()
-
-# USD to INR conversion rate
+model, mlp_model, scaler, feature_columns = load_or_train_model()
 USD_TO_INR = 83.0
 
-# Header
+# ============================================================
+# MAIN APP
+# ============================================================
 st.markdown('<h1 class="main-header">Medical Insurance Cost Prediction</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Predict your estimated health insurance premium using Machine Learning</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">AI-powered insurance cost prediction with medical history & lifestyle analysis</p>', unsafe_allow_html=True)
 
-# Sidebar for input
-st.sidebar.header("Enter Your Details")
+# Model selection
+model_choice = st.radio("Select Model", ["Random Forest (Recommended)", "Neural Network (MLP)"], horizontal=True)
 
-# Input fields
 col1, col2 = st.columns(2)
 
 with col1:
-    age = st.slider("Age", min_value=18, max_value=64, value=30, help="Age of the primary beneficiary")
-    sex = st.selectbox("Gender", ["male", "female"], help="Gender of the beneficiary")
-    bmi = st.number_input("BMI", min_value=15.0, max_value=55.0, value=25.0, step=0.1,
-                          help="Body Mass Index (weight in kg / height in m²)")
+    st.markdown('<h3 class="section-header">Personal Information</h3>', unsafe_allow_html=True)
+    age = st.slider("Age", 18, 64, 30)
+    sex = st.selectbox("Gender", ["male", "female"])
+    bmi = st.number_input("BMI", 15.0, 55.0, 25.0, 0.1)
+    children = st.selectbox("Children", [0, 1, 2, 3, 4, 5])
+    smoker = st.selectbox("Smoker", ["yes", "no"])
+    region = st.selectbox("Region", ["north", "south", "east", "west"])
 
 with col2:
-    children = st.selectbox("Number of Children", [0, 1, 2, 3, 4, 5],
-                            help="Number of children covered by health insurance")
-    smoker = st.selectbox("Smoker", ["yes", "no"], help="Smoking status")
-    region = st.selectbox("Region", ["north", "south", "east", "west"],
-                          help="Residential region in India")
+    st.markdown('<h3 class="section-header">Medical History</h3>', unsafe_allow_html=True)
+    hospitalizations = st.selectbox("Hospitalizations (5 yrs)", [0, 1, 2, 3, 4, 5])
+    chronic_diseases = st.selectbox("Chronic Diseases", [0, 1, 2, 3, 4])
+    pre_existing = st.selectbox("Pre-existing Condition", [0, 1])
+    family_history = st.selectbox("Family History", [0, 1, 2])
+    surgeries = st.selectbox("Past Surgeries", [0, 1, 2, 3])
 
-# BMI Calculator
-with st.expander("Calculate BMI"):
-    st.write("Enter your weight and height to calculate BMI:")
-    weight = st.number_input("Weight (kg)", min_value=30.0, max_value=200.0, value=70.0, step=0.1)
-    height = st.number_input("Height (cm)", min_value=100.0, max_value=250.0, value=170.0, step=0.1)
+st.markdown('<h3 class="section-header">Lifestyle</h3>', unsafe_allow_html=True)
+lcol1, lcol2, lcol3, lcol4 = st.columns(4)
 
-    if weight > 0 and height > 0:
-        height_m = height / 100
-        calculated_bmi = weight / (height_m ** 2)
-        st.info(f"Your BMI: {calculated_bmi:.1f}")
-        if st.button("Use This BMI"):
-            bmi = calculated_bmi
-            st.rerun()
+with lcol1:
+    exercise_freq = st.selectbox("Exercise", ["Never", "Rarely", "Sometimes", "Regular", "Daily"], index=2)
+    exercise_map = {"Never": 0, "Rarely": 1, "Sometimes": 2, "Regular": 3, "Daily": 4}
+    exercise_val = exercise_map[exercise_freq]
 
-# Prediction button
+with lcol2:
+    alcohol = st.selectbox("Alcohol", ["None", "Occasional", "Moderate", "Heavy"], index=1)
+    alcohol_map = {"None": 0, "Occasional": 1, "Moderate": 2, "Heavy": 3}
+    alcohol_val = alcohol_map[alcohol]
+
+with lcol3:
+    smoking_years = st.number_input("Smoking Years", 0, 30, 0)
+    diet_quality = st.selectbox("Diet Quality", ["Poor", "Fair", "Good", "Excellent"], index=1)
+    diet_map = {"Poor": 1, "Fair": 2, "Good": 3, "Excellent": 4}
+    diet_val = diet_map[diet_quality]
+
+with lcol4:
+    stress_level = st.selectbox("Stress Level", ["Low", "Moderate", "High", "Very High"], index=1)
+    stress_map = {"Low": 1, "Moderate": 2, "High": 3, "Very High": 4}
+    stress_val = stress_map[stress_level]
+    sleep_hours = st.number_input("Sleep Hours", 4.0, 10.0, 7.0, 0.5)
+    water_intake = st.number_input("Water Intake (L)", 0.5, 4.0, 2.0, 0.1)
+    sugar_intake = st.selectbox("Sugar Intake", ["Low", "Moderate", "High"], index=1)
+    sugar_map = {"Low": 0, "Moderate": 1, "High": 2}
+    sugar_val = sugar_map[sugar_intake]
+
 if st.button("Predict Insurance Cost", type="primary"):
     sex_encoded = 1 if sex == 'male' else 0
     smoker_encoded = 1 if smoker == 'yes' else 0
@@ -135,104 +205,99 @@ if st.button("Predict Insurance Cost", type="primary"):
         'east': {'northeast': 1, 'northwest': 0, 'southeast': 0, 'southwest': 0},
         'west': {'northeast': 0, 'northwest': 0, 'southeast': 0, 'southwest': 1}
     }
+    r = region_mapping.get(region, {'northeast': 0, 'northwest': 0, 'southeast': 0, 'southwest': 0})
 
-    region_encoded = region_mapping.get(region, {
-        'northeast': 0, 'northwest': 0, 'southeast': 0, 'southwest': 0
-    })
+    bmi_cats = {'normal': 0, 'obese': 0, 'overweight': 0, 'underweight': 0}
+    if bmi < 18.5: bmi_cats['underweight'] = 1
+    elif bmi < 25: bmi_cats['normal'] = 1
+    elif bmi < 30: bmi_cats['overweight'] = 1
+    else: bmi_cats['obese'] = 1
+
+    health_risk_score = (
+        smoker_encoded * 3 + (1 if bmi > 30 else 0) * 2 +
+        (1 if chronic_diseases > 1 else 0) * 2 +
+        (1 if exercise_val <= 1 else 0) * 1 +
+        (1 if age > 50 else 0) * 1 +
+        (1 if stress_val >= 3 else 0) * 1
+    )
 
     features = np.array([[
         age, sex_encoded, bmi, children, smoker_encoded,
-        region_encoded['northeast'], region_encoded['northwest'],
-        region_encoded['southeast'], region_encoded['southwest']
+        r['northeast'], r['northwest'], r['southeast'], r['southwest'],
+        hospitalizations, chronic_diseases, pre_existing, family_history, surgeries,
+        exercise_val, alcohol_val, smoking_years, diet_val, stress_val,
+        sleep_hours, water_intake, sugar_val, health_risk_score,
+        bmi_cats['normal'], bmi_cats['obese'], bmi_cats['overweight'], bmi_cats['underweight']
     ]])
 
-    features_scaled = scaler.transform(features)
-    prediction_usd = model.predict(features_scaled)[0]
+    if "Random Forest" in model_choice:
+        prediction_usd = model.predict(features)[0]
+        model_name = "Random Forest"
+    else:
+        features_scaled = scaler.transform(features)
+        prediction_usd = mlp_model.predict(features_scaled)[0]
+        model_name = "Neural Network (MLP)"
+
     prediction_inr = prediction_usd * USD_TO_INR
 
     st.markdown("---")
+    c1, c2, c3 = st.columns(3)
+    with c1: st.metric("Annual Premium (INR)", f"\u20b9{prediction_inr:,.0f}")
+    with c2: st.metric("Annual Premium (USD)", f"${prediction_usd:,.0f}")
+    with c3: st.metric("Monthly Premium (INR)", f"\u20b9{prediction_inr/12:,.0f}")
 
-    col1, col2, col3 = st.columns(3)
+    st.caption(f"Prediction by: {model_name}")
 
-    with col1:
-        st.metric("Estimated Annual Premium (INR)", f"Rs.{prediction_inr:,.0f}")
-    with col2:
-        st.metric("Estimated Annual Premium (USD)", f"${prediction_usd:,.0f}")
-    with col3:
-        st.metric("Monthly Premium (INR)", f"Rs.{prediction_inr/12:,.0f}")
+    # Save prediction if logged in
+    if st.session_state.logged_in:
+        pred_data = {'age': age, 'sex': sex, 'bmi': bmi, 'smoker': smoker,
+                     'region': region, 'prediction_inr': f"\u20b9{prediction_inr:,.0f}"}
+        users = load_users()
+        if 'predictions' not in users[st.session_state.username]:
+            users[st.session_state.username]['predictions'] = []
+        users[st.session_state.username]['predictions'].append(pred_data)
+        save_users(users)
 
-    st.subheader("Your Input Details")
-    details_col1, details_col2 = st.columns(2)
-
-    with details_col1:
-        st.write(f"**Age:** {age} years")
-        st.write(f"**Gender:** {sex}")
-        st.write(f"**BMI:** {bmi}")
-
-    with details_col2:
-        st.write(f"**Children:** {children}")
-        st.write(f"**Smoker:** {smoker}")
-        st.write(f"**Region:** {region}")
-
-# Information section
-st.markdown("---")
-st.subheader("About This Prediction")
-
-info_col1, info_col2, info_col3 = st.columns(3)
-
-with info_col1:
-    st.info("**AI-Powered**\n\nUses Random Forest algorithm trained on medical records to predict insurance costs.")
-
-with info_col2:
-    st.info("**Indian Focused**\n\nDesigned for Indian users with INR currency and Indian state regions.")
-
-with info_col3:
-    st.info("**Key Factors**\n\nSmoking status, BMI, Age, and Region are the main cost predictors.")
-
-# Model Performance Section
+# ============================================================
+# MODEL PERFORMANCE
+# ============================================================
 st.markdown("---")
 st.subheader("Model Performance")
 
 metrics_data = {
-    'Model': ['Linear Regression', 'Decision Tree', 'Random Forest'],
-    'R2 Score': [0.8069, 0.7992, 0.8843],
-    'MAE ($)': [4177.05, 2801.90, 2546.60],
-    'RMSE ($)': [5956.34, 6075.06, 4611.70]
+    'Model': ['Linear Regression', 'Decision Tree', 'Random Forest', 'Gradient Boosting', 'Neural Network (MLP)'],
+    'R2 Score': [0.7919, 0.8062, 0.8947, 0.8785, 0.8768],
+    'MAE ($)': [4481.63, 2987.77, 2665.70, 2772.35, 2987.30],
+    'RMSE ($)': [6184.07, 5968.17, 4398.92, 4724.54, 4757.59]
 }
-
 metrics_df = pd.DataFrame(metrics_data)
 st.dataframe(metrics_df, use_container_width=True)
 
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+colors = ['#3498DB', '#E74C3C', '#2ECC71', '#9B59B6', '#F39C12']
 
-colors = ['#3498DB', '#E74C3C', '#2ECC71']
 axes[0].bar(metrics_df['Model'], metrics_df['R2 Score'], color=colors, edgecolor='black')
-axes[0].set_title('R2 Score Comparison', fontweight='bold')
-axes[0].set_ylabel('R2 Score')
+axes[0].set_title('R2 Score', fontweight='bold')
 axes[0].set_ylim(0, 1)
+axes[0].tick_params(axis='x', rotation=30)
 for i, v in enumerate(metrics_df['R2 Score']):
-    axes[0].text(i, v + 0.01, f'{v:.4f}', ha='center', fontweight='bold')
+    axes[0].text(i, v + 0.01, f'{v:.4f}', ha='center', fontsize=8, fontweight='bold')
 
 axes[1].bar(metrics_df['Model'], metrics_df['MAE ($)'], color=colors, edgecolor='black')
-axes[1].set_title('Mean Absolute Error', fontweight='bold')
-axes[1].set_ylabel('MAE ($)')
-for i, v in enumerate(metrics_df['MAE ($)']):
-    axes[1].text(i, v + 50, f'${v:,.0f}', ha='center', fontsize=9, fontweight='bold')
+axes[1].set_title('MAE', fontweight='bold')
+axes[1].tick_params(axis='x', rotation=30)
 
 axes[2].bar(metrics_df['Model'], metrics_df['RMSE ($)'], color=colors, edgecolor='black')
-axes[2].set_title('Root Mean Squared Error', fontweight='bold')
-axes[2].set_ylabel('RMSE ($)')
-for i, v in enumerate(metrics_df['RMSE ($)']):
-    axes[2].text(i, v + 50, f'${v:,.0f}', ha='center', fontsize=9, fontweight='bold')
+axes[2].set_title('RMSE', fontweight='bold')
+axes[2].tick_params(axis='x', rotation=30)
 
 plt.tight_layout()
 st.pyplot(fig)
 
-# Footer
 st.markdown("---")
 st.markdown("""
 <div style='text-align: center; color: #666;'>
-    <p>Medical Insurance Cost Prediction | Built with Streamlit & Scikit-learn</p>
+    <p>Medical Insurance Cost Prediction | Built with Streamlit, Scikit-learn & Neural Networks</p>
     <p>Developer: Krutika Mohanty | B.Tech Computer Science</p>
 </div>
 """, unsafe_allow_html=True)
