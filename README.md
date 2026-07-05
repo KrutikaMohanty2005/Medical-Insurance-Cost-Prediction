@@ -93,8 +93,56 @@ Medical-Insurance-Cost-Prediction/
 ### Web Interface
 ![Web Interface](static/web_interface.png)
 
+### Prediction Result
+![Prediction Result](static/prediction_result.png)
+
 ### Model Comparison
 ![Model Comparison](static/model_comparison.png)
+
+### Feature Importance
+![Feature Importance](static/feature_importance.png)
+
+### Actual vs Predicted
+![Actual vs Predicted](static/actual_vs_predicted.png)
+
+### BMI vs Charges by Smoker
+![BMI vs Charges by Smoker](static/bmi_vs_charges_smoker.png)
+
+### Age and Charges by Smoking Status
+![Age and Charges by Smoker](static/age_charges_by_smoker.png)
+
+### Residuals Analysis
+![Residuals Analysis](static/residuals_analysis.png)
+
+### Charges by Region and Smoker
+![Charges by Region and Smoker](static/charges_region_smoker.png)
+
+### Charges by Number of Children
+![Charges by Children](static/charges_by_children.png)
+
+### Correlation Heatmap
+![Correlation Heatmap](static/correlation_heatmap_enhanced.png)
+
+### Data Distribution
+
+| Plot | Description |
+|------|-------------|
+| ![Age Distribution](static/age_distribution.png) | Age Distribution |
+| ![BMI Distribution](static/bmi_distribution.png) | BMI Distribution |
+| ![Charges Distribution](static/charges_distribution.png) | Charges Distribution |
+| ![Smoker Distribution](static/smoker_distribution.png) | Smoker Distribution |
+| ![Gender Distribution](static/gender_distribution.png) | Gender Distribution |
+| ![Region Distribution](static/region_distribution.png) | Region Distribution |
+
+### Charges Analysis
+
+| Plot | Description |
+|------|-------------|
+| ![Charges by Smoker](static/charges_by_smoker.png) | Charges by Smoking Status |
+| ![Charges by Gender](static/charges_by_gender.png) | Charges by Gender |
+| ![Charges by Region](static/charges_by_region.png) | Charges by Region |
+| ![Age vs Charges](static/age_vs_charges.png) | Age vs Charges |
+| ![BMI vs Charges](static/bmi_vs_charges.png) | BMI vs Charges |
 
 ## Model Performance
 
