@@ -22,12 +22,44 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    .main-header { font-size: 2.5rem; color: #1a1a2e !important; text-align: center; padding: 1rem; font-weight: 700; }
-    .sub-header { font-size: 1.2rem; color: #444 !important; text-align: center; }
-    .section-header { color: #1a1a2e !important; border-bottom: 3px solid #2E86AB; padding-bottom: 8px; font-weight: 600; font-size: 1.3rem; }
-    h3 { color: #1a1a2e !important; }
-    label { font-weight: 600 !important; }
-    [data-testid="stForm"] label { color: #333 !important; font-weight: 600 !important; }
+    .stApp { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
+    .main-header { font-size: 2.5rem; color: #0d47a1 !important; text-align: center; padding: 1rem; font-weight: 700; }
+    .sub-header { font-size: 1.1rem; color: #333 !important; text-align: center; margin-bottom: 2rem; }
+    .section-header { 
+        color: #0d47a1 !important; 
+        border-bottom: 3px solid #0d47a1; 
+        padding-bottom: 8px; 
+        font-weight: 700; 
+        font-size: 1.3rem;
+        margin-top: 1.5rem;
+    }
+    h3 { color: #0d47a1 !important; font-weight: 700 !important; }
+    label { font-weight: 600 !important; color: #1a1a1a !important; }
+    [data-testid="stSidebar"] { background: linear-gradient(180deg, #0d47a1 0%, #1565c0 100%); }
+    [data-testid="stSidebar"] label { color: #ffffff !important; }
+    [data-testid="stSidebar"] .stRadio label { color: #ffffff !important; }
+    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color: #ffffff !important; }
+    [data-testid="stSidebar"] .stSuccess { background: rgba(255,255,255,0.2) !important; }
+    [data-testid="stSidebar"] .stSuccess p { color: #ffffff !important; }
+    .stButton > button { 
+        background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); 
+        color: white; 
+        border: none; 
+        padding: 0.7rem 2rem; 
+        font-weight: 600;
+        border-radius: 8px;
+        font-size: 1rem;
+        width: 100%;
+    }
+    .stButton > button:hover { background: linear-gradient(135deg, #0a3d91 0%, #0d47a1 100%); }
+    div[data-testid="stMetric"] { 
+        background: white; 
+        padding: 1rem; 
+        border-radius: 10px; 
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+    }
+    div[data-testid="stMetric"] label { color: #555 !important; }
+    div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #0d47a1 !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -50,47 +82,52 @@ def save_users(users):
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-# Session state
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = ''
 
-# Auth sidebar
-st.sidebar.markdown("---")
-if st.session_state.logged_in:
-    st.sidebar.success(f"Logged in as: **{st.session_state.username}**")
-    if st.sidebar.button("Logout"):
-        st.session_state.logged_in = False
-        st.session_state.username = ''
-        st.rerun()
-else:
-    auth_tab = st.sidebar.radio("Authentication", ["Login", "Register"])
-    if auth_tab == "Login":
-        login_user = st.sidebar.text_input("Username", key="login_user")
-        login_pass = st.sidebar.text_input("Password", type="password", key="login_pass")
-        if st.sidebar.button("Login"):
-            users = load_users()
-            if login_user in users and users[login_user]['password'] == hash_password(login_pass):
-                st.session_state.logged_in = True
-                st.session_state.username = login_user
-                st.rerun()
-            else:
-                st.sidebar.error("Invalid credentials")
+# Sidebar
+with st.sidebar:
+    st.markdown("## Welcome")
+    if st.session_state.logged_in:
+        st.success(f"Logged in as: **{st.session_state.username}**")
+        if st.button("Logout"):
+            st.session_state.logged_in = False
+            st.session_state.username = ''
+            st.rerun()
     else:
-        reg_user = st.sidebar.text_input("Username", key="reg_user")
-        reg_email = st.sidebar.text_input("Email", key="reg_email")
-        reg_pass = st.sidebar.text_input("Password", type="password", key="reg_pass")
-        if st.sidebar.button("Register"):
-            if len(reg_pass) < 6:
-                st.sidebar.error("Password must be 6+ characters")
-            else:
+        st.markdown("Login to save predictions")
+        auth_tab = st.radio("Account", ["Login", "Register"], label_visibility="collapsed")
+        if auth_tab == "Login":
+            login_user = st.text_input("Username", key="login_user")
+            login_pass = st.text_input("Password", type="password", key="login_pass")
+            if st.button("Login"):
                 users = load_users()
-                if reg_user in users:
-                    st.sidebar.error("Username taken")
+                if login_user in users and users[login_user]['password'] == hash_password(login_pass):
+                    st.session_state.logged_in = True
+                    st.session_state.username = login_user
+                    st.rerun()
                 else:
-                    users[reg_user] = {'password': hash_password(reg_pass), 'email': reg_email, 'predictions': []}
-                    save_users(users)
-                    st.sidebar.success("Registered! Now login")
+                    st.error("Invalid credentials")
+        else:
+            reg_user = st.text_input("Username", key="reg_user")
+            reg_email = st.text_input("Email", key="reg_email")
+            reg_pass = st.text_input("Password", type="password", key="reg_pass")
+            if st.button("Register"):
+                if len(reg_pass) < 6:
+                    st.error("Password must be 6+ characters")
+                else:
+                    users = load_users()
+                    if reg_user in users:
+                        st.error("Username taken")
+                    else:
+                        users[reg_user] = {'password': hash_password(reg_pass), 'email': reg_email, 'predictions': []}
+                        save_users(users)
+                        st.success("Registered! Now login")
+
+    st.markdown("---")
+    st.markdown("### About")
+    st.markdown("AI-powered insurance cost prediction using **Random Forest** and **Neural Networks**.")
 
 # ============================================================
 # MODEL LOADING
@@ -99,18 +136,14 @@ else:
 def load_or_train_model():
     from sklearn.ensemble import RandomForestRegressor
     from sklearn.preprocessing import StandardScaler, LabelEncoder
-    from sklearn.model_selection import train_test_split
     from sklearn.neural_network import MLPRegressor
 
     df = pd.read_csv('data/insurance_enhanced.csv')
     df_encoded = df.copy()
-
     df_encoded['sex_encoded'] = LabelEncoder().fit_transform(df_encoded['sex'])
     df_encoded['smoker_encoded'] = LabelEncoder().fit_transform(df_encoded['smoker'])
-
     region_dummies = pd.get_dummies(df_encoded['region'], prefix='region', dtype=int)
     df_encoded = pd.concat([df_encoded, region_dummies], axis=1)
-
     bmi_dummies = pd.get_dummies(df_encoded['bmi_category'], prefix='bmi_cat', dtype=int)
     df_encoded = pd.concat([df_encoded, bmi_dummies], axis=1)
 
@@ -142,10 +175,10 @@ model, mlp_model, scaler, feature_columns = load_or_train_model()
 USD_TO_INR = 83.0
 
 # ============================================================
-# MAIN APP
+# MAIN CONTENT - PREDICTION FORM
 # ============================================================
 st.markdown('<h1 class="main-header">Medical Insurance Cost Prediction</h1>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">AI-powered insurance cost prediction with medical history & lifestyle analysis</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Predict your estimated health insurance premium using Machine Learning</p>', unsafe_allow_html=True)
 
 # Model selection
 model_choice = st.radio("Select Model", ["Random Forest (Recommended)", "Neural Network (MLP)"], horizontal=True)
@@ -251,7 +284,6 @@ if st.button("Predict Insurance Cost", type="primary"):
 
     st.caption(f"Prediction by: {model_name}")
 
-    # Save prediction if logged in
     if st.session_state.logged_in:
         pred_data = {'age': age, 'sex': sex, 'bmi': bmi, 'smoker': smoker,
                      'region': region, 'prediction_inr': f"\u20b9{prediction_inr:,.0f}"}
@@ -277,7 +309,7 @@ metrics_df = pd.DataFrame(metrics_data)
 st.dataframe(metrics_df, use_container_width=True)
 
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
-colors = ['#3498DB', '#E74C3C', '#2ECC71', '#9B59B6', '#F39C12']
+colors = ['#78909c', '#78909c', '#0d47a1', '#78909c', '#78909c']
 
 axes[0].bar(metrics_df['Model'], metrics_df['R2 Score'], color=colors, edgecolor='black')
 axes[0].set_title('R2 Score', fontweight='bold')
@@ -299,7 +331,7 @@ st.pyplot(fig)
 
 st.markdown("---")
 st.markdown("""
-<div style='text-align: center; color: #666;'>
+<div style='text-align: center; color: #555; padding: 1rem;'>
     <p>Medical Insurance Cost Prediction | Built with Streamlit, Scikit-learn & Neural Networks</p>
     <p>Developer: Krutika Mohanty | B.Tech Computer Science</p>
 </div>
