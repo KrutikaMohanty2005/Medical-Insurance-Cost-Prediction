@@ -379,13 +379,30 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown("---")
 st.subheader("Model Performance")
 
-metrics_data = {
-    'Model': ['Linear Regression', 'Decision Tree', 'Random Forest', 'Gradient Boosting', 'Neural Network (MLP)'],
-    'R2 Score': [0.7919, 0.8062, 0.8947, 0.8785, 0.8768],
-    'MAE ($)': [4481.63, 2987.77, 2665.70, 2772.35, 2987.30],
-    'RMSE ($)': [6184.07, 5968.17, 4398.92, 4724.54, 4757.59]
-}
-metrics_df = pd.DataFrame(metrics_data)
+metrics_path = os.path.join(os.path.dirname(__file__), 'models', 'model_metrics.json')
+if os.path.exists(metrics_path):
+    with open(metrics_path, 'r') as f:
+        saved_metrics = json.load(f)
+    metrics_data = {
+        'Model': [],
+        'R2 Score': [],
+        'MAE ($)': [],
+        'RMSE ($)': []
+    }
+    for name, m in saved_metrics.get('models', {}).items():
+        metrics_data['Model'].append(name)
+        metrics_data['R2 Score'].append(round(m['R2'], 4))
+        metrics_data['MAE ($)'].append(round(m['MAE'], 2))
+        metrics_data['RMSE ($)'].append(round(m['RMSE'], 2))
+    metrics_df = pd.DataFrame(metrics_data)
+else:
+    metrics_data = {
+        'Model': ['Linear Regression', 'Decision Tree', 'Random Forest', 'Gradient Boosting', 'Neural Network (MLP)'],
+        'R2 Score': [0.7919, 0.8062, 0.8947, 0.8785, 0.8768],
+        'MAE ($)': [4481.63, 2987.77, 2665.70, 2772.35, 2987.30],
+        'RMSE ($)': [6184.07, 5968.17, 4398.92, 4724.54, 4757.59]
+    }
+    metrics_df = pd.DataFrame(metrics_data)
 st.dataframe(metrics_df, use_container_width=True)
 
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))

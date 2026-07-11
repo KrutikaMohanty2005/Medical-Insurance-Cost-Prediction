@@ -14,7 +14,15 @@ import os
 import secrets
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(32)
+SECRET_KEY_FILE = 'data/.secret_key'
+if os.path.exists(SECRET_KEY_FILE):
+    with open(SECRET_KEY_FILE, 'r') as f:
+        app.secret_key = f.read().strip()
+else:
+    app.secret_key = secrets.token_hex(32)
+    os.makedirs('data', exist_ok=True)
+    with open(SECRET_KEY_FILE, 'w') as f:
+        f.write(app.secret_key)
 
 USD_TO_INR = 83.0
 

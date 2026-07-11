@@ -50,3 +50,6 @@ logs/
 
 # User data (generated at runtime)
 data/users.json
+
+# Secret key (generated at runtime)
+data/.secret_key

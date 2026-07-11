@@ -17,7 +17,7 @@ print("LOADING DATASET")
 print("=" * 60)
 
 # Read the CSV file into a pandas DataFrame
-df = pd.read_csv('data/insurance.csv')
+df = pd.read_csv('data/medical_insurance.csv')
 
 # Display basic information about the dataset
 print(f"\nDataset Shape: {df.shape}")

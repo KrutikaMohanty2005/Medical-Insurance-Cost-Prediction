@@ -31,17 +31,18 @@ print("=" * 60)
 # Create a copy for encoding
 df_encoded = df.copy()
 
-# Initialize Label Encoder
-le = LabelEncoder()
+# Initialize Label Encoders (separate instance for each column)
+le_sex = LabelEncoder()
+le_smoker = LabelEncoder()
 
 # Encode 'sex' column: female=0, male=1
-df_encoded['sex_encoded'] = le.fit_transform(df_encoded['sex'])
+df_encoded['sex_encoded'] = le_sex.fit_transform(df_encoded['sex'])
 print("\nSex Encoding:")
 print("  female -> 0")
 print("  male -> 1")
 
 # Encode 'smoker' column: no=0, yes=1
-df_encoded['smoker_encoded'] = le.fit_transform(df_encoded['smoker'])
+df_encoded['smoker_encoded'] = le_smoker.fit_transform(df_encoded['smoker'])
 print("\nSmoker Encoding:")
 print("  no -> 0")
 print("  yes -> 1")
@@ -149,8 +150,8 @@ joblib.dump(feature_columns, 'models/feature_columns.pkl')
 print("[OK] Feature columns list saved to 'models/feature_columns.pkl'")
 
 # Save label encoders
-joblib.dump(le, 'models/label_encoder.pkl')
-print("[OK] Label encoder saved to 'models/label_encoder.pkl'")
+joblib.dump({'sex': le_sex, 'smoker': le_smoker}, 'models/label_encoder.pkl')
+print("[OK] Label encoders saved to 'models/label_encoder.pkl'")
 
 # ============================================================
 # STEP 7: Summary
