@@ -26,16 +26,24 @@ st.markdown("""
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
     .stApp > header { display: none; }
+    #MainMenu, footer, .appview-container .main footer { visibility: hidden; }
     .block-container {
         padding-top: 1rem !important;
+        padding-bottom: 3rem !important;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .main-container {
+        max-width: 1100px;
+        margin: 0 auto;
     }
     .main-header {
-        font-size: 2.5rem;
+        font-size: 2.7rem;
         color: #ffffff !important;
         text-align: center;
-        padding: 1rem 0 0.2rem 0;
+        padding: 1.5rem 0 0.2rem 0;
         font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
     }
     .sub-header {
         font-size: 1.1rem;
@@ -53,13 +61,13 @@ st.markdown("""
     }
     .form-card {
         background: #ffffff;
-        border-radius: 15px;
-        padding: 2rem 2.5rem;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        border-radius: 20px;
+        padding: 2.2rem 2.2rem 2rem 2.2rem;
+        box-shadow: 0 15px 55px rgba(0,0,0,0.18);
         margin-bottom: 2rem;
     }
     .section-header {
-        color: #333333 !important;
+        color: #667eea !important;
         border-bottom: 3px solid #667eea;
         padding-bottom: 8px;
         font-weight: 700;
@@ -69,52 +77,96 @@ st.markdown("""
     }
     h3 { color: #333333 !important; font-weight: 700 !important; }
     label { font-weight: 600 !important; color: #333333 !important; }
-    .stSelectbox label, .stSlider label, .stNumberInput label, .stRadio label {
+    .stSelectbox label, .stSlider label, .stNumberInput label, .stRadio label, .stTextInput label {
         color: #333333 !important;
         font-weight: 600 !important;
     }
-    [data-testid="stSidebar"] { background: #f0f2f6 !important; }
-    [data-testid="stSidebar"] label { color: #333333 !important; }
-    [data-testid="stSidebar"] .stRadio label { color: #333333 !important; }
-    [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color: #667eea !important; }
-    [data-testid="stSidebar"] p { color: #555555 !important; }
-    [data-testid="stSidebar"] .stSuccess { background: rgba(102,126,234,0.15) !important; border-radius: 8px; }
-    [data-testid="stSidebar"] .stSuccess p { color: #333333 !important; }
-    [data-testid="stSidebar"] .stError p { color: #e74c3c !important; }
-    .stButton > button {
-        background: #28a745;
-        color: #ffffff;
-        border: none;
-        padding: 0.6rem 1.5rem;
-        font-weight: 700;
-        border-radius: 8px;
-        font-size: 0.95rem;
+    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div>div>div {
+        border-radius: 12px !important;
+        border: 1.8px solid #ddd !important;
+        padding: 0.75rem !important;
     }
-    .stButton > button:hover { background: #218838; }
-    div[data-testid="stMetric"] {
-        background: #ffffff;
-        padding: 1rem;
-        border-radius: 10px;
-        border: 1px solid #e0e0e0;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    .stTextInput>div>div>input:focus, .stNumberInput>div>div>input:focus, .stSelectbox>div>div>div>div>div:focus {
+        outline: none !important;
+        border-color: #667eea !important;
+        box-shadow: 0 0 0 4px rgba(102,126,234,0.18) !important;
     }
-    div[data-testid="stMetric"] label { color: #666 !important; }
-    div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #667eea !important; }
-    hr { border-color: #e0e0e0 !important; }
-    .stRadio > div { display: flex; gap: 10px; flex-wrap: wrap; }
+    .stButton>button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        color: #ffffff !important;
+        border: none !important;
+        padding: 0.8rem 1.6rem !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+        font-size: 1rem !important;
+        box-shadow: 0 8px 25px rgba(102,126,234,0.2) !important;
+    }
+    .stButton>button:hover {
+        background: linear-gradient(135deg, #5c6fd4 0%, #6b4ba8 100%) !important;
+    }
+    .stRadio > div { display: flex; gap: 12px; flex-wrap: wrap; }
     .stRadio > div > label {
         background: #f8f9fa;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        padding: 10px 20px;
+        border: 2px solid #ddd;
+        border-radius: 14px;
+        padding: 14px 20px;
         cursor: pointer;
         transition: all 0.3s;
         text-align: center;
-        min-width: 150px;
+        min-width: 160px;
+        color: #333;
+        font-weight: 600;
     }
-    .stRadio > div > label:hover { border-color: #667eea; background: #f0f2ff; }
+    .stRadio > div > label:hover {
+        border-color: #667eea;
+        background: #f0f2ff;
+    }
+    .stRadio > div > label[aria-checked="true"] {
+        border-color: #667eea;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        box-shadow: 0 8px 18px rgba(102,126,234,0.2);
+    }
+    .about-section {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 15px 55px rgba(0,0,0,0.18);
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+    .about-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.25rem;
+        margin-top: 1rem;
+    }
+    .about-card {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 14px;
+        border-left: 4px solid #667eea;
+    }
+    .about-card h4 {
+        color: #667eea;
+        margin-bottom: 0.75rem;
+    }
+    .about-card p {
+        color: #555;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+    .result-section {
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 15px 55px rgba(0,0,0,0.18);
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
 </style>
 """, unsafe_allow_html=True)
+st.markdown('<div class="main-container">', unsafe_allow_html=True)
 
 # ============================================================
 # USER AUTHENTICATION
@@ -245,7 +297,12 @@ col1, col2 = st.columns(2)
 with col1:
     age = st.number_input("Age (18-64):", min_value=18, max_value=64, value=30, placeholder="Enter your age")
     sex = st.selectbox("Gender:", ["Select Gender", "male", "female"])
-    region = st.selectbox("Region / State:", ["Select Region", "north", "south", "east", "west"])
+    region = st.radio("Region / State:", ["north", "south", "east", "west"], format_func=lambda x: {
+        'north': 'North India',
+        'south': 'South India',
+        'east': 'East India',
+        'west': 'West India'
+    }[x])
 
 with col2:
     bmi = st.number_input("BMI (15-55):", min_value=15.0, max_value=55.0, value=25.0, step=0.1, placeholder="e.g., 25.5")

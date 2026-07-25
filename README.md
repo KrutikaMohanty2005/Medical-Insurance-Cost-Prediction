@@ -155,11 +155,17 @@ Random Forest was selected as the final model because:
 
 ## Screenshots
 
-### Web Interface
+### Flask Web Interface
+![Flask Login](screenshots/flask_login.png)
+
+### Flask Prediction Form
 ![Web Interface](screenshots/web_interface.png)
 
-### Prediction Result
+### Flask Prediction Result
 ![Prediction Result](screenshots/prediction_result.png)
+
+### Streamlit App
+![Streamlit App](screenshots/streamlit_main.png)
 
 ### Model Comparison (Enhanced)
 ![Model Comparison](screenshots/model_comparison_enhanced.png)
