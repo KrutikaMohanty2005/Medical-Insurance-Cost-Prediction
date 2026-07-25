@@ -23,7 +23,7 @@ st.set_page_config(
 st.markdown("""
 <style>
     .stApp {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #f0f2f6 !important;
     }
     .stApp > header { display: none; }
     #MainMenu, footer, .appview-container .main footer { visibility: hidden; }
@@ -32,42 +32,25 @@ st.markdown("""
         padding-bottom: 3rem !important;
         max-width: 1200px;
         margin: 0 auto;
-        background: transparent !important;
-    }
-    .main-container {
-        max-width: 1100px;
-        margin: 0 auto;
     }
     .main-header {
         font-size: 2.5rem;
-        color: #ffffff !important;
+        color: #667eea !important;
         text-align: center;
         padding: 1.5rem 0 0.2rem 0;
         font-weight: 700;
-        text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
     }
     .sub-header {
         font-size: 1.1rem;
-        color: #ffffff !important;
+        color: #555 !important;
         text-align: center;
         margin-bottom: 0.2rem;
-        opacity: 0.95;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
     }
     .tagline {
         font-size: 0.95rem;
-        color: #ffffff !important;
+        color: #777 !important;
         text-align: center;
         margin-bottom: 1.5rem;
-        opacity: 0.9;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-    }
-    .form-card {
-        background: #ffffff;
-        border-radius: 20px;
-        padding: 2.2rem 2.2rem 2rem 2.2rem;
-        box-shadow: 0 15px 55px rgba(0,0,0,0.18);
-        margin-bottom: 2rem;
     }
     .section-header {
         color: #667eea !important;
@@ -78,23 +61,27 @@ st.markdown("""
         margin-top: 1rem;
         margin-bottom: 1rem;
     }
-    h3 { color: #333333 !important; font-weight: 700 !important; }
-    label { font-weight: 600 !important; color: #333333 !important; }
-    .stSelectbox label, .stSlider label, .stNumberInput label, .stRadio label, .stTextInput label {
+    h1, h2, h3, h4, h5, h6, p, span, div, label {
+        color: #333333 !important;
+    }
+    .main-header, .sub-header, .tagline {
+        color: inherit !important;
+    }
+    .stTextInput label, .stNumberInput label, .stSelectbox label, .stRadio label, .stMultiSelect label {
         color: #333333 !important;
         font-weight: 600 !important;
     }
-    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div>div>div {
-        border-radius: 12px !important;
-        border: 1.8px solid #ddd !important;
-        padding: 0.75rem !important;
+    .stTextInput>div>div>input, .stNumberInput>div>div>input {
         background: #ffffff !important;
         color: #333333 !important;
+        border: 1.8px solid #ddd !important;
+        border-radius: 12px !important;
     }
-    .stTextInput>div>div>input:focus, .stNumberInput>div>div>input:focus, .stSelectbox>div>div>div>div>div:focus {
-        outline: none !important;
-        border-color: #667eea !important;
-        box-shadow: 0 0 0 4px rgba(102,126,234,0.18) !important;
+    .stSelectbox>div>div>div>div>div {
+        background: #ffffff !important;
+        color: #333333 !important;
+        border: 1.8px solid #ddd !important;
+        border-radius: 12px !important;
     }
     .stButton>button {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
@@ -104,80 +91,18 @@ st.markdown("""
         font-weight: 700 !important;
         border-radius: 10px !important;
         font-size: 1.1rem !important;
-        box-shadow: 0 8px 25px rgba(102,126,234,0.3) !important;
         width: 100% !important;
-    }
-    .stButton>button:hover {
-        background: linear-gradient(135deg, #5c6fd4 0%, #6b4ba8 100%) !important;
-        box-shadow: 0 10px 30px rgba(102,126,234,0.4) !important;
-    }
-    .stRadio > div { display: flex; gap: 12px; flex-wrap: wrap; }
-    .stRadio > div > label {
-        background: #ffffff;
-        border: 2px solid #ddd;
-        border-radius: 14px;
-        padding: 14px 20px;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-align: center;
-        min-width: 160px;
-        color: #333;
-        font-weight: 600;
-    }
-    .stRadio > div > label:hover {
-        border-color: #667eea;
-        background: #f0f2ff;
-    }
-    .stRadio > div > label[aria-checked="true"] {
-        border-color: #667eea;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: #ffffff;
-        box-shadow: 0 8px 18px rgba(102,126,234,0.3);
-    }
-    .stRadio > div > label[aria-checked="true"] span {
-        color: #ffffff !important;
     }
     div[data-testid="stMetric"] {
         background: #ffffff;
         padding: 1.2rem;
         border-radius: 14px;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         border-left: 4px solid #667eea;
     }
     div[data-testid="stMetric"] label { color: #666 !important; }
     div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #667eea !important; font-weight: 700 !important; }
-    .about-section {
-        background: #ffffff;
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: 0 15px 55px rgba(0,0,0,0.18);
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-    }
-    .about-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.25rem;
-        margin-top: 1rem;
-    }
-    .about-card {
-        background: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 14px;
-        border-left: 4px solid #667eea;
-    }
-    .about-card h4 {
-        color: #667eea;
-        margin-bottom: 0.75rem;
-    }
-    .about-card p {
-        color: #555;
-        line-height: 1.6;
-        font-size: 0.95rem;
-    }
-    .result-section {
-        background: #ffffff;
-        border-radius: 20px;
+    .stMarkdown p, .stMarkdown li, .stMarkdown span { color: #333 !important; }
+    .stDataFrame { background: #ffffff; border-radius: 14px; }
         padding: 2rem;
         box-shadow: 0 15px 55px rgba(0,0,0,0.18);
         margin-top: 2rem;
