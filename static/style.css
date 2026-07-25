@@ -1,6 +1,7 @@
-"" "
- Medical Insurance Cost Prediction - CSS Styles This file contains all styling for the web application. "" "
-
+"""
+Medical Insurance Cost Prediction - CSS Styles
+This file contains all styling for the web application.
+"""
 
 /* ============================================================
    GLOBAL STYLES
@@ -13,7 +14,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -62,7 +63,7 @@ body {
     color: #333;
     margin-bottom: 25px;
     padding-bottom: 10px;
-    border-bottom: 3px solid #0d9488;
+    border-bottom: 3px solid #667eea;
 }
 
 .form-group {
@@ -89,8 +90,8 @@ body {
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #0d9488;
-    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
 
 .form-group small {
@@ -106,7 +107,7 @@ body {
 .predict-btn {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
     border-radius: 8px;
@@ -119,7 +120,7 @@ body {
 
 .predict-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(13, 148, 136, 0.4);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
 }
 
 .predict-btn:active {
@@ -129,7 +130,7 @@ body {
 .predict-again-btn {
     display: inline-block;
     padding: 12px 30px;
-    background: #0d9488;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -139,7 +140,7 @@ body {
 }
 
 .predict-again-btn:hover {
-    background: #0f766e;
+    background: linear-gradient(135deg, #5a6fd6 0%, #6a4192 100%);
 }
 
 /* ============================================================
@@ -192,10 +193,12 @@ body {
 }
 
 .insurance-info {
-    background: #e8f5e9;
+    background: #f0fff4;
+    border-left: 4px solid #27ae60;
     padding: 15px;
     border-radius: 8px;
     margin-top: 15px;
+    text-align: left;
 }
 
 .insurance-info h4 {
@@ -205,11 +208,13 @@ body {
 
 .insurance-info ul {
     margin-left: 20px;
+    margin-bottom: 0;
 }
 
 .insurance-info li {
     margin: 5px 0;
     color: #555;
+    font-size: 0.9em;
 }
 
 .user-details {
@@ -224,7 +229,7 @@ body {
     color: #333;
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 2px solid #0d9488;
+    border-bottom: 2px solid #667eea;
 }
 
 .user-details p {
@@ -286,7 +291,7 @@ body {
 }
 
 .feature-card h3 {
-    color: #0d9488;
+    color: #667eea;
     margin-bottom: 15px;
 }
 
@@ -317,7 +322,7 @@ body {
 }
 
 .bmi-toggle {
-    background: #0d9488;
+    background: #28a745;
     color: white;
     border: none;
     padding: 8px 15px;
@@ -328,12 +333,12 @@ body {
 }
 
 .bmi-toggle:hover {
-    background: #0f766e;
+    background: #218838;
 }
 
 .bmi-calc-section {
     background: #f0fdfa;
-    border: 2px solid #0d9488;
+    border: 2px solid #28a745;
     border-radius: 10px;
     padding: 15px;
     margin-top: 10px;
@@ -341,7 +346,7 @@ body {
 
 .calc-title {
     font-weight: 600;
-    color: #0d9488;
+    color: #28a745;
     margin-bottom: 15px;
 }
 
@@ -376,7 +381,7 @@ body {
 .bmi-value {
     font-size: 24px;
     font-weight: bold;
-    color: #0d9488;
+    color: #28a745;
 }
 
 .use-bmi-btn {
@@ -428,44 +433,15 @@ body {
 }
 
 .region-label:hover {
-    border-color: #FF9933;
-    background: #fff5eb;
+    border-color: #667eea;
+    background: #f0f0ff;
 }
 
-/* North India - Saffron */
-.region-label.north:hover,
-.region-option input[type="radio"]:checked+.region-label.north {
-    border-color: #FF9933;
-    background: linear-gradient(135deg, #FF9933 0%, #e68a2e 100%);
+.region-option input[type="radio"]:checked + .region-label {
+    border-color: #667eea;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3);
-}
-
-/* South India - Green */
-.region-label.south:hover,
-.region-option input[type="radio"]:checked+.region-label.south {
-    border-color: #138808;
-    background: linear-gradient(135deg, #138808 0%, #0f6b06 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(19, 136, 8, 0.3);
-}
-
-/* East India - Blue */
-.region-label.east:hover,
-.region-option input[type="radio"]:checked+.region-label.east {
-    border-color: #000080;
-    background: linear-gradient(135deg, #000080 0%, #000066 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(0, 0, 128, 0.3);
-}
-
-/* West India - Purple */
-.region-label.west:hover,
-.region-option input[type="radio"]:checked+.region-label.west {
-    border-color: #9370DB;
-    background: linear-gradient(135deg, #9370DB 0%, #7b5fc4 100%);
-    color: white;
-    box-shadow: 0 4px 15px rgba(147, 112, 219, 0.3);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .region-name {
@@ -501,6 +477,48 @@ body {
 }
 
 /* ============================================================
+   ABOUT SECTION STYLES
+   ============================================================ */
+.about-section {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    margin: 30px auto;
+    max-width: 1100px;
+}
+
+.about-section h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.about-card {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.about-card h4 {
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.about-card p {
+    color: #666;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+/* ============================================================
    RESPONSIVE DESIGN
    ============================================================ */
 @media (max-width: 768px) {
@@ -516,5 +534,13 @@ body {
 
     .result-value {
         font-size: 2.2em;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .region-selector {
+        grid-template-columns: 1fr;
     }
 }

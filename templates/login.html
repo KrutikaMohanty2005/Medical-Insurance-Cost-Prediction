@@ -6,17 +6,25 @@
     <title>Login - Medical Insurance Cost Prediction</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
         .auth-container {
             max-width: 400px;
-            margin: 60px auto;
+            width: 100%;
             padding: 40px;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
         .auth-container h2 {
             text-align: center;
-            color: #2E86AB;
+            color: #667eea;
             margin-bottom: 30px;
         }
         .form-group {
@@ -37,8 +45,9 @@
             transition: border-color 0.3s;
         }
         .form-group input:focus {
-            border-color: #2E86AB;
+            border-color: #667eea;
             outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
         }
         .auth-btn {
             width: 100%;
@@ -54,6 +63,7 @@
         }
         .auth-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
         .auth-link {
             text-align: center;
@@ -61,9 +71,12 @@
             color: #666;
         }
         .auth-link a {
-            color: #2E86AB;
+            color: #667eea;
             text-decoration: none;
             font-weight: 600;
+        }
+        .auth-link a:hover {
+            text-decoration: underline;
         }
         .flash-messages {
             margin-bottom: 20px;

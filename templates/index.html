@@ -66,14 +66,13 @@
             max-width: 1100px;
         }
         .section-title {
-            color: #ffffff;
-            border-bottom: 3px solid rgba(255,255,255,0.5);
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
             padding-bottom: 8px;
             margin-top: 25px;
             margin-bottom: 20px;
             font-weight: 700;
             font-size: 1.3em;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
         .features-grid {
             display: grid;
@@ -106,46 +105,129 @@
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102,126,234,0.2);
         }
-        .bmi-calc-group {
-            display: flex;
-            gap: 8px;
-            align-items: flex-end;
-            margin-bottom: 8px;
+        .bmi-calculator {
+            margin-top: 10px;
         }
-        .bmi-calc-group input {
-            flex: 1;
-        }
-        .bmi-calc-btn {
+        .bmi-toggle {
             background: #28a745;
-            color: #fff;
+            color: white;
             border: none;
-            padding: 10px 14px;
-            border-radius: 6px;
+            padding: 8px 15px;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 0.85em;
-            font-weight: 600;
-            white-space: nowrap;
+            font-size: 14px;
+            transition: background 0.3s;
+            width: 100%;
         }
-        .bmi-calc-btn:hover {
+        .bmi-toggle:hover {
             background: #218838;
         }
-        .bmi-result {
-            font-size: 0.85em;
-            margin-top: 5px;
-            color: #555;
-            font-weight: 600;
+        .bmi-calc-section {
+            background: #f0fdfa;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
         }
-        .bmi-recommendation {
-            font-size: 0.8em;
-            margin-top: 8px;
-            color: #666;
-            font-style: italic;
+        .calc-title {
+            font-weight: 600;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+        .calc-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .calc-row label {
+            width: 100px;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        .calc-row input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .use-bmi-btn {
+            width: 100%;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .use-bmi-btn:hover {
+            background: #2980b9;
+        }
+        .calc-result {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .bmi-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .region-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .region-option {
+            position: relative;
+        }
+        .region-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .region-label {
+            display: block;
+            padding: 15px;
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .region-label:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+        }
+        .region-option input[type="radio"]:checked + .region-label {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+        }
+        .region-name {
+            display: block;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .region-desc {
+            display: block;
+            font-size: 12px;
+            opacity: 0.9;
             line-height: 1.4;
         }
         .predict-btn {
             width: 100%;
             padding: 15px;
-            background: #28a745;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 8px;
@@ -157,21 +239,7 @@
         }
         .predict-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(40,167,69,0.4);
-        }
-        .predict-again-btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: background 0.3s;
-            margin-top: 20px;
-        }
-        .predict-again-btn:hover {
-            background: #5a6fd6;
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
         }
         .result-section {
             background: #ffffff;
@@ -205,17 +273,6 @@
             color: #666;
             margin-bottom: 30px;
         }
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .details-grid p {
-            color: #555;
-            margin: 5px 0;
-        }
         .user-details {
             background: #f8f9fa;
             padding: 20px;
@@ -229,6 +286,94 @@
             padding-bottom: 10px;
             border-bottom: 2px solid #667eea;
         }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .details-grid p {
+            color: #555;
+            margin: 5px 0;
+        }
+        .insurance-info {
+            background: #f0fff4;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: left;
+        }
+        .insurance-info h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        .insurance-info ul {
+            margin-left: 20px;
+            margin-bottom: 0;
+        }
+        .insurance-info li {
+            margin: 5px 0;
+            color: #555;
+            font-size: 0.9em;
+        }
+        .predict-again-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+        .predict-again-btn:hover {
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4192 100%);
+        }
+        .about-section {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin: 30px auto;
+            max-width: 1100px;
+        }
+        .about-section h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .about-card {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .about-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .about-card p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.9;
+        }
+        .footer p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
         .error-section {
             background: #fff5f5;
             border-radius: 15px;
@@ -241,16 +386,12 @@
             color: #e74c3c;
             margin-bottom: 15px;
         }
-        .footer {
-            text-align: center;
-            color: white;
-            padding: 20px;
-            opacity: 0.9;
-        }
         @media (max-width: 768px) {
             .header h1 { font-size: 1.8em; }
             .form-card { padding: 20px; }
             .result-value { font-size: 2.2em; }
+            .about-grid { grid-template-columns: 1fr; }
+            .region-selector { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -306,7 +447,7 @@
                             <div id="bmiCalcResult" class="calc-result" style="display:none;">
                                 <span class="bmi-value" id="bmiCalcValue"></span>
                                 <span id="bmiCalcCategory"></span>
-                                <div class="bmi-recommendation" id="bmiCalcRecommendation"></div>
+                                <div id="bmiCalcRecommendation" style="font-size: 0.85em; margin-top: 8px; color: #666; font-style: italic;"></div>
                             </div>
                         </div>
                     </div>
@@ -327,17 +468,40 @@
                         <option value="no" {{ 'selected' if smoker == 'no' }}>No</option>
                     </select>
                 </div>
-                <div class="feature-card">
-                    <h4>Region / State</h4>
-                    <select name="region" required>
-                        <option value="">Select Region</option>
-                        <option value="north" {{ 'selected' if region == 'north' }}>North India (Delhi, UP, Punjab, HP, J&K, UK)</option>
-                        <option value="south" {{ 'selected' if region == 'south' }}>South India (TN, Karnataka, Kerala, AP, Telangana)</option>
-                        <option value="east" {{ 'selected' if region == 'east' }}>East India (West Bengal, Odisha, Bihar, Jharkhand)</option>
-                        <option value="west" {{ 'selected' if region == 'west' }}>West India (Maharashtra, Gujarat, Rajasthan, Goa)</option>
-                    </select>
+            </div>
+
+            <h3 class="section-title">Region / State</h3>
+            <div class="region-selector">
+                <div class="region-option">
+                    <input type="radio" name="region" id="region-north" value="north" {{ 'checked' if region == 'north' else 'checked' if not region else '' }}>
+                    <label for="region-north" class="region-label">
+                        <span class="region-name">North India</span>
+                        <span class="region-desc">Delhi, UP, Punjab, HP, J&K, Uttarakhand</span>
+                    </label>
+                </div>
+                <div class="region-option">
+                    <input type="radio" name="region" id="region-south" value="south" {{ 'checked' if region == 'south' }}>
+                    <label for="region-south" class="region-label">
+                        <span class="region-name">South India</span>
+                        <span class="region-desc">TN, Karnataka, Kerala, AP, Telangana</span>
+                    </label>
+                </div>
+                <div class="region-option">
+                    <input type="radio" name="region" id="region-east" value="east" {{ 'checked' if region == 'east' }}>
+                    <label for="region-east" class="region-label">
+                        <span class="region-name">East India</span>
+                        <span class="region-desc">West Bengal, Odisha, Bihar, Jharkhand</span>
+                    </label>
+                </div>
+                <div class="region-option">
+                    <input type="radio" name="region" id="region-west" value="west" {{ 'checked' if region == 'west' }}>
+                    <label for="region-west" class="region-label">
+                        <span class="region-name">West India</span>
+                        <span class="region-desc">Maharashtra, Gujarat, Rajasthan, Goa</span>
+                    </label>
                 </div>
             </div>
+            <p style="font-size: 0.85em; color: #888; margin-top: 8px;">Select your region in India</p>
 
             <h3 class="section-title">Medical History</h3>
             <div class="features-grid">
@@ -458,18 +622,30 @@
             <div class="result-card">
                 <div class="result-label">Estimated Annual Insurance Premium:</div>
                 <div class="result-value">{{ prediction }}</div>
-                <div class="result-usd">({{ prediction_usd }} USD)</div>
+                <div class="result-usd">({{ prediction_usd }})</div>
+
                 <div class="user-details">
-                    <h3>Input Summary:</h3>
+                    <h3>Your Input Details:</h3>
                     <div class="details-grid">
-                        <p><strong>Age:</strong> {{ age }}</p>
-                        <p><strong>Gender:</strong> {{ sex }}</p>
+                        <p><strong>Age:</strong> {{ age }} years</p>
+                        <p><strong>Gender:</strong> {{ sex|capitalize }}</p>
                         <p><strong>BMI:</strong> {{ bmi }}</p>
                         <p><strong>Children:</strong> {{ children }}</p>
-                        <p><strong>Smoker:</strong> {{ smoker }}</p>
+                        <p><strong>Smoker:</strong> {{ smoker|capitalize }}</p>
                         <p><strong>Region:</strong> {{ region }}</p>
                     </div>
                 </div>
+
+                <div class="insurance-info">
+                    <h4>Insurance Premium Information</h4>
+                    <ul>
+                        <li>This is an estimated annual premium.</li>
+                        <li>Actual costs may vary based on insurance provider.</li>
+                        <li>Younger age, lower BMI, and no smoking habits reduce costs.</li>
+                        <li>Maintaining good BMI can reduce your premium.</li>
+                    </ul>
+                </div>
+
                 <a href="/" class="predict-again-btn">Predict Again</a>
             </div>
         </div>
@@ -482,6 +658,24 @@
             <a href="/" class="predict-again-btn">Try Again</a>
         </div>
         {% endif %}
+    </div>
+
+    <div class="about-section">
+        <h2>About This Project</h2>
+        <div class="about-grid">
+            <div class="about-card">
+                <h4>AI-Powered</h4>
+                <p>Uses machine learning algorithms trained on medical records to predict insurance costs.</p>
+            </div>
+            <div class="about-card">
+                <h4>Indian Focused</h4>
+                <p>Designed for Indian users with INR currency and Indian state regions.</p>
+            </div>
+            <div class="about-card">
+                <h4>Key Factors</h4>
+                <p>Smoking status, BMI, age, and region are the main cost predictors.</p>
+            </div>
+        </div>
     </div>
 
     <div class="footer">
